@@ -1,148 +1,132 @@
+<?php 
+include "../Php/process_rooms.php"; 
+?>
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <title>Assign Rooms - Hostel Management</title>
-    <link rel="stylesheet" href="../Css/topbar.css">
+    <title>Assign Rooms - Hostel Management System</title>
     <link rel="stylesheet" href="../Css/assign_rooms.css">
+    <link rel="stylesheet" href="../Css/topbar.css">
 </head>
+
 <body>
 
-<?php include 'topbar.php'; ?>
+    <!-- Header -->
+    <?php include "topbar.php"; ?>
 
-<main id="assign-rooms">
-    <h2>Assign Rooms</h2>
+    <!-- Main Content -->
+    <main>
+        <section id="assign-rooms">
+            <h2>Assign Rooms</h2>
 
-    <!-- Student Applications -->
-    <section class="applications">
-        <h3>Pending Student Applications</h3>
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Student ID</th>
-                        <th>Full Name</th>
-                        <th>Semester</th>
-                        <th>Department</th>
-                        <th>Room Preference</th>
-                        <th>Notes</th>
-                        <th>Assign Room</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>STU001</td>
-                        <td>John Doe</td>
-                        <td>2nd</td>
-                        <td>CSE</td>
-                        <td>Single</td>
-                        <td>Near elevator</td>
-                        <td>
-                            <select>
-                                <option value="">--Select Room--</option>
-                                <option value="A101">A101 (Single)</option>
-                                <option value="B201">B201 (Single)</option>
-                            </select>
-                            <button class="assign-btn">Assign</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>STU002</td>
-                        <td>Jane Smith</td>
-                        <td>1st</td>
-                        <td>EEE</td>
-                        <td>Double</td>
-                        <td>Near window</td>
-                        <td>
-                            <select>
-                                <option value="">--Select Room--</option>
-                                <option value="C301">C301 (Double)</option>
-                            </select>
-                            <button class="assign-btn">Assign</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>STU003</td>
-                        <td>Michael Lee</td>
-                        <td>3rd</td>
-                        <td>BBA</td>
-                        <td>Shared</td>
-                        <td>No preference</td>
-                        <td>
-                            <select>
-                                <option value="">--Select Room--</option>
-                                <option value="B202">B202 (Shared)</option>
-                            </select>
-                            <button class="assign-btn">Assign</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </section>
+            <!-- Action Form -->
+            <form action="" method="POST">
+                <label>Application ID</label>
+                <input type="text" name="application_id" placeholder="Enter Application ID" class="request_input">
 
-    <!-- Rooms Info -->
-    <section class="rooms-info">
-        <h3>Room Availability</h3>
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Room No</th>
-                        <th>Block</th>
-                        <th>Type</th>
-                        <th>Capacity</th>
-                        <th>Occupied</th>
-                        <th>Available Beds</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="available">
-                        <td>A101</td>
-                        <td>A Block</td>
-                        <td>Single</td>
-                        <td>1</td>
-                        <td>0</td>
-                        <td>1</td>
-                    </tr>
-                    <tr class="available">
-                        <td>B201</td>
-                        <td>B Block</td>
-                        <td>Single</td>
-                        <td>1</td>
-                        <td>0</td>
-                        <td>1</td>
-                    </tr>
-                    <tr class="available">
-                        <td>C301</td>
-                        <td>C Block</td>
-                        <td>Double</td>
-                        <td>2</td>
-                        <td>0</td>
-                        <td>2</td>
-                    </tr>
-                    <tr class="partial">
-                        <td>A102</td>
-                        <td>A Block</td>
-                        <td>Shared</td>
-                        <td>3</td>
-                        <td>1</td>
-                        <td>2</td>
-                    </tr>
-                    <tr class="full">
-                        <td>B203</td>
-                        <td>B Block</td>
-                        <td>Shared</td>
-                        <td>3</td>
-                        <td>3</td>
-                        <td>0</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </section>
-</main>
-!-- Footer -->
+                <label>Assign Room</label>
+                <select name="room_id" class="room-select">
+                    <option value="">--Select Room--</option>
+                    <?php foreach ($rooms as $room): ?>
+                        <?php if ($room['available'] == 1): ?>
+                            <option value="<?php echo $room['id']; ?>">
+                                <?php echo $room['room_name'] . " (" . $room['room_type'] . ")"; ?>
+                            </option>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                </select>
+
+                <span class="error"><?php echo $errors; ?></span>
+                <span class="success"><?php echo $success; ?></span>
+
+                <button type="submit" class="submit-btn">Assign</button>
+            </form>
+
+            <!-- Pending Applications Table -->
+            <div class="table-container">
+                <h3>Pending Student Applications</h3>
+                <table class="apps-table">
+                    <thead>
+                        <tr>
+                            <th>App ID</th>
+                            <th>Student ID</th>
+                            <th>Full Name</th>
+                            <th>Semester</th>
+                            <th>Department</th>
+                            <th>Preference</th>
+                            <th>Block</th>
+                            <th>Notes</th>
+                            <th>Status</th>
+                            <th>Room ID</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php if (!empty($applications)): ?>
+                            <?php foreach ($applications as $app): ?>
+                                <tr>
+                                    <td><?php echo $app['id']; ?></td>
+                                    <td><?php echo $app['student_id']; ?></td>
+                                    <td><?php echo $app['fullname']; ?></td>
+                                    <td><?php echo $app['semester']; ?></td>
+                                    <td><?php echo $app['department']; ?></td>
+                                    <td><?php echo $app['room_preference']; ?></td>
+                                    <td><?php echo $app['hostel_block']; ?></td>
+                                    <td><?php echo $app['additional_notes']; ?></td>
+                                    <td>
+                                            <?php echo $app['status']; ?>
+                                        </span>
+                                    </td>
+                                    <td><?php echo $app['room_id'] ?? "-"; ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <tr><td colspan="10">No applications found</td></tr>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Room Availability Table -->
+            <div class="table-container">
+                <h3>Room Availability</h3>
+                <table class="rooms-table">
+                    <thead>
+                        <tr>
+                            <th>Room ID</th>
+                            <th>Room Name</th>
+                            <th>Block</th>
+                            <th>Type</th>
+                            <th>Capacity</th>
+                            <th>Occupied</th>
+                            <th>Available Beds</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php if (!empty($rooms)): ?>
+                            <?php foreach ($rooms as $room): ?>
+                                <tr class="<?php echo ($room['available'] == 1) ? 'available' : 'full'; ?>">
+                                    <td><?php echo $room['id']; ?></td>
+                                    <td><?php echo $room['room_name']; ?></td>
+                                    <td><?php echo $room['block']; ?></td>
+                                    <td><?php echo $room['room_type']; ?></td>
+                                    <td><?php echo $room['capacity']; ?></td>
+                                    <td><?php echo $room['occupied']; ?></td>
+                                    <td><?php echo $room['capacity'] - $room['occupied']; ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <tr><td colspan="7">No rooms available</td></tr>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
+
+        </section>
+    </main>
+
+    <!-- Footer -->
     <?php include "footer.php"; ?>
+
 </body>
 </html>

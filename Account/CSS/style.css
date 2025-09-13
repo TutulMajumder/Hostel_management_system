@@ -10,6 +10,7 @@ header {
     color: white;
     text-align: center;
     padding: 20px 0;
+    position: relative; 
 }
 
 #feature-cards {
@@ -52,6 +53,7 @@ header {
     color: #555;
     margin-top: 8px;
 }
+
 footer {
     background: #007bff;
     color: white;
@@ -60,3 +62,24 @@ footer {
     margin-top: 30px;
 }
 
+
+.logout-container {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+.logout-btn {
+    padding: 6px 12px;
+    font-size: 14px;
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.logout-btn:hover {
+    background-color: #c0392b;
+}

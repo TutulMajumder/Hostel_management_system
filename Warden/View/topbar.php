@@ -1,6 +1,6 @@
 <header>
     <div class="left-section">
-        <a href="dashboard.php" class="home-link">
+        <a href="warden_dashboard.php" class="home-link">
             <img src="../img/hotel.png" alt="Logo Icon" title="Back to Dashboard">
         </a>
     </div>

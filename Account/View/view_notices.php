@@ -29,6 +29,7 @@ $result = $conn->query($sql);
         echo "<p>No notices found.</p>";
     }
     ?>
+     <p><a href="dashboard.php">⬅️ Back to Dashboard</a></p>
 </div>
 </body>
 </html>

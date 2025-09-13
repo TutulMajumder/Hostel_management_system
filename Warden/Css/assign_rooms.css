@@ -1,79 +1,146 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f7f9fc;
-    margin: 0;
-    padding: 0;
-}
-
-main#assign-rooms {
-    max-width: 1200px;
+#assign-rooms {
+    width: 80%; 
+    max-width: 1000px; 
     margin: 20px auto;
-    padding: 10px;
-}
-
-h2, h3 {
-    color: #003366;
+    font-family: Arial, sans-serif;
     text-align: center;
 }
 
+#assign-rooms h2 {
+    font-size: 28px;
+    color: #003366;
+    margin-bottom: 25px;
+    font-weight: 600;
+}
+
+/* ===== Form Section ===== */
+form {
+    background: #f5f5f5;
+    padding: 20px 25px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    width: 70%;          
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+}
+
+form label {
+    display: block;
+    margin: 12px 0 6px;
+    font-weight: bold;
+    color: #333;
+}
+
+form input,
+form select {
+    width: 100%; 
+    padding: 10px 12px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-family: inherit;
+    transition: 0.2s;
+}
+
+form input:focus,
+form select:focus {
+    border-color: #003366;
+    outline: none;
+    box-shadow: 0 0 4px rgba(0, 51, 102, 0.3);
+}
+
+.submit-btn {
+    width: 100%;   
+    background: #003366;
+    color: #fff;
+    border: none;
+    padding: 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 15px;
+    margin-top: 15px;
+    transition: 0.3s;
+}
+
+.submit-btn:hover {
+    background: #0055aa;
+}
+
+/* ===== Table Section ===== */
 .table-container {
-    max-height: 300px;
-    overflow-y: auto;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    margin: 20px 0;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 35px;
+    overflow-x: auto;
+    padding: 15px;
+}
+
+.table-container h3 {
+    text-align: left;
+    margin-bottom: 12px;
+    font-size: 20px;
+    color: #003366;
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
-    min-width: 700px;
+    font-size: 14px;
 }
 
-th, td {
-    padding: 12px;
-    border: 1px solid #ddd;
-    text-align: center;
+thead {
+    background: #003366;
+    color: #fff;
 }
 
 th {
-    background-color: #003366;
-    color: white;
-    position: sticky;
-    top: 0;
-    z-index: 1;
+    padding: 12px 15px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+    background-color: #003366;  
+    color: #fff;   
 }
 
-.assign-btn {
-    padding: 8px 15px;
-    margin-left: 5px;
-    background-color: #003366;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+td {
+    padding: 12px 15px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
 }
 
-.assign-btn:hover {
-    opacity: 0.8;
+tr:hover td {
+    background: #f9f9f9;
 }
 
-select {
-    padding: 6px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
+/* Prevent heading disappearing */
+thead:hover, th:hover {
+    background-color: #003366 !important;
+    color: #fff !important;
 }
 
-/* Room availability colors */
-.available td {
-    background-color: #d4edda; /* green */
+
+.error {
+  color: red;
+  font-size: 13px;
 }
 
-.partial td {
-    background-color: #fff3cd; /* yellow */
+.success {
+  color: green;
+  margin-top: 15px;
+  font-size: 15px;
 }
 
-.full td {
-    background-color: #f8d7da; /* red */
-    color: #721c24;
+tr.available {
+    background: #eafbea;
+}
+
+tr.full {
+    background: #fdeaea;
+}
+
+tr.partial {
+    background: #fff9e6;
 }

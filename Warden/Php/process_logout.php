@@ -9,3 +9,4 @@ setcookie('remember_pass', '', time() - 3600, "/");
 
 header("Location: ../View/login.php");
 exit();
+?>

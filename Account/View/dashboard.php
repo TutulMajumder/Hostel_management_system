@@ -1,17 +1,27 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <title>Accounts Dashboard - Hostel Management System</title>
     <link rel="stylesheet" href="../CSS/style.css">
 </head>
 <body>
-    <!-- Header -->
+   
     <header>
         <h1>Hostel Management System</h1>
         <h2>Accounts Dashboard</h2>
+
+        
+        <div class="logout-container">
+            <form action="logout.php" method="POST">
+                <button type="submit" class="logout-btn">Logout</button>
+            </form>
+        </div>
     </header>
 
-    <!-- Main Content -->
+   
     <main>
         <section id="feature-cards">
             <div class="card-row">
@@ -58,7 +68,7 @@
         </section>
     </main>
 
-    <!-- Footer -->
+   
     <footer>
         <p>&copy; 2025 Hostel Management System. All Rights Reserved.</p>
     </footer>
