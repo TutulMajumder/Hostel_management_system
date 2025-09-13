@@ -1,3 +1,7 @@
+<?php
+session_start();
+// Optional: Add a login/session check here
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,6 +13,13 @@
     <header>
         <h1>Hostel Management System</h1>
         <h2>Accounts Dashboard</h2>
+
+        <!-- Logout Button -->
+        <div class="logout-container">
+            <form action="logout.php" method="POST">
+                <button type="submit" class="logout-btn">Logout</button>
+            </form>
+        </div>
     </header>
 
     <!-- Main Content -->
