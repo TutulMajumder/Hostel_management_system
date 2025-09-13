@@ -1,0 +1,44 @@
+/* logout.css */
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 100%;
+    max-width: 400px;
+    margin: 150px auto;
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    text-align: center;
+}
+
+h2 {
+    color: #dc3545; /* red color for logout message */
+    font-size: 24px;
+    margin-bottom: 25px;
+}
+
+button {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 6px;
+    background-color: #007BFF;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+a {
+    text-decoration: none;
+}

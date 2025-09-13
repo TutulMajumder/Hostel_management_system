@@ -1,0 +1,145 @@
+/* Simple Health Reports CSS */
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    color: #333;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 6px;
+}
+
+/* Header */
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #1976D2;
+    color: white;
+    padding: 15px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+}
+
+.dashboard-header h2 {
+    margin: 0;
+}
+
+.back-btn {
+    background-color: white;
+    color: #1976D2;
+    padding: 8px 15px;
+    text-decoration: none;
+    border-radius: 4px;
+}
+
+.back-btn:hover {
+    background-color: #e0e0e0;
+}
+
+/* Student Selector */
+.selector-form {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.selector-form select {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+#viewReportBtn {
+    padding: 8px 15px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+#viewReportBtn:hover {
+    background-color: #43A047;
+}
+
+/* Student Report Table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+th, td {
+    padding: 10px;
+    border: 1px solid #ccc;
+    text-align: left;
+}
+
+th {
+    background-color: #e3f2fd;
+    color: #1976D2;
+}
+
+tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Report Generator Form */
+.report-generator {
+    margin-top: 20px;
+    padding: 15px;
+    background: #f9f9f9;
+    border-radius: 6px;
+}
+
+.report-generator label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.report-generator input,
+.report-generator select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.report-generator input[type="submit"] {
+    background-color: #1976D2;
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+}
+
+.report-generator input[type="submit"]:hover {
+    background-color: #1565C0;
+}
+
+/* Messages */
+.success {
+    color: green;
+    padding: 8px;
+    margin-top: 10px;
+    border: 1px solid green;
+    border-radius: 4px;
+}
+
+.error {
+    color: red;
+    padding: 8px;
+    margin-top: 10px;
+    border: 1px solid red;
+    border-radius: 4px;
+}
