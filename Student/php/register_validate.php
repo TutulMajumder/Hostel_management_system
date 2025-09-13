@@ -34,8 +34,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $phoneErr = "Phone number is required";
     } else {
         $phone = trim($_POST["phone"]);
-        if (!preg_match("/^[0-9]{10,15}$/", $phone)) {
-            $phoneErr = "Phone must be digits only (10-15 numbers)";
+        if (!preg_match("/^0[0-9]{10}$/", $phone)) {
+            $phoneErr = "Phone must be exactly 11 digits and start with 0";
         }
     }
 
@@ -94,8 +94,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $passwordErr = "Password is required";
     } else {
         $password = $_POST["password"];
-        if (strlen($password) < 6) {
-            $passwordErr = "Password must be at least 6 characters";
+        // Must be at least 8 characters, include letters, numbers, special characters
+        if (!preg_match("/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/", $password)) {
+            $passwordErr = "Password must be at least 8 characters and include letters, numbers, and special characters";
         }
     }
 
@@ -130,7 +131,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $success = "✅ Registration successful! <a href='../PHP/login.php'>Click here to login</a>";
                 $fullname = $email = $phone = $gender = $dob = $semester = $department = $address = $password = $confirm_password = "";
             } else {
-                $emailErr = "❌ Something went wrong. Try again!";
+                $emailErr = " Something went wrong. Try again!";
             }
             $stmt->close();
         }
