@@ -1,3 +1,7 @@
+<?php
+include "../Php/process_dashboard.php";
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
