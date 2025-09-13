@@ -1,45 +1,64 @@
 <?php
+
 if (session_status() == PHP_SESSION_NONE) {
+
     session_start();
+
 }
 
-// Only allow logged-in students
+
 if (!isset($_SESSION['role']) || $_SESSION['role'] != 'student') {
+
     header("Location: ../Warden/View/login.php");
+
     exit();
+
 }
 
-// Get student ID from session
+
 $student_id = $_SESSION['user_id'];
+
 
 include "../DB/apply_room_DB.php";
 
-// Messages
+
 $success = isset($_GET['success']) ? $_GET['success'] : "";
+
 
 $error   = isset($_GET['error']) ? $_GET['error'] : "";
 
 
-// Fetch student info
+
 $stmt = $conn->prepare("SELECT * FROM students WHERE id=?");
+
 
 $stmt->bind_param("i", $student_id);
 
 
+
 $stmt->execute();
 
+
 $result = $stmt->get_result();
+
 
 $student = $result->fetch_assoc();
 
 
+
 if (!$student) {
+
     $_SESSION['error'] = "Student not found!";
 
 
+
     header("Location: ../Warden/View/login.php");
+    
     exit();
+
+
 }
+
 ?>
 
 
@@ -77,7 +96,7 @@ if (!$student) {
 
         <?php if ($error) echo "<p class='error'>$error</p>"; ?>
 
-        <!-- Update Profile Form -->
+        
 
         <form action="../php/update_profile.php" method="POST">
 
@@ -124,7 +143,7 @@ if (!$student) {
 
         </form>
 
-        <!-- Change Password Form -->
+        
         <h3>Change Password</h3>
 
         <form action="../php/change_password.php" method="POST">

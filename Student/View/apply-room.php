@@ -1,7 +1,3 @@
-
-
-
-
 <?php
 
 include "../php/apply_room_validate.php"; 

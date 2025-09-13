@@ -1,17 +1,24 @@
 .dashboard {
   padding: 50px;
+
   text-align: center;
+
   font-family: Arial, sans-serif;
+
 
 
 }
 
 .dashboard h1 {
+
   font-size: 30px;
+
   margin-bottom: 30px;
+
 }
 
 .room-form {
+  
   max-width: 500px;
   margin: 0 auto;
   text-align: left;
