@@ -1,0 +1,330 @@
+-- ==========================
+-- Students Table
+-- ==========================
+CREATE TABLE students (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    fullname VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    phone VARCHAR(15) NOT NULL,
+    gender ENUM('Male', 'Female', 'Other') NOT NULL,
+    dob DATE NOT NULL,
+    semester VARCHAR(20) NOT NULL,
+    department VARCHAR(50) NOT NULL,
+    address TEXT NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- ==========================
+-- Wardens Table
+-- ==========================
+CREATE TABLE wardens (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    phone VARCHAR(15) NOT NULL,
+    gender ENUM('Male', 'Female', 'Other') NOT NULL,
+    dob DATE NOT NULL,
+    address TEXT NOT NULL,
+    password VARCHAR(255) NOT NULL,
+	status ENUM('Active','Inactive') DEFAULT 'Active',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- ==========================
+-- Health Officer Table
+-- ==========================
+
+CREATE TABLE health_officers (
+     id INT AUTO_INCREMENT PRIMARY KEY,
+     username VARCHAR(50) NOT NULL,
+	 email VARCHAR(100) NOT NULL UNIQUE,
+	 phone VARCHAR(15) NOT NULL,
+    gender ENUM('Male', 'Female', 'Other') NOT NULL,
+    dob DATE NOT NULL,
+    address TEXT NOT NULL,
+    password VARCHAR(255) NOT NULL
+);
+
+-- ==========================
+-- Accountant Table
+-- ==========================
+
+CREATE TABLE accountants(
+     id INT AUTO_INCREMENT PRIMARY KEY,
+     username VARCHAR(50) NOT NULL,
+	 email VARCHAR(100) NOT NULL UNIQUE,
+	 phone VARCHAR(15) NOT NULL,
+    gender ENUM('Male', 'Female', 'Other') NOT NULL,
+    dob DATE NOT NULL,
+    address TEXT NOT NULL,
+    password VARCHAR(255) NOT NULL
+);
+
+-- ==========================
+-- Rooms Table
+-- ==========================
+CREATE TABLE rooms (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    room_name VARCHAR(20) NOT NULL,       
+    block VARCHAR(10) NOT NULL,
+    room_type ENUM('Single','Double','Shared') NOT NULL,
+    available INT DEFAULT 1,    
+    student_id INT DEFAULT NULL,
+    FOREIGN KEY (student_id) REFERENCES students(id)
+);
+
+-- ==========================
+-- Room Applications Table
+-- ==========================
+CREATE TABLE room_applications (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    fullname VARCHAR(100) NOT NULL,
+    student_id INT NOT NULL,  -- Changed to INT
+    semester VARCHAR(20) NOT NULL,
+    department VARCHAR(50) NOT NULL,
+    room_preference VARCHAR(20) NOT NULL,
+    hostel_block VARCHAR(20) NOT NULL,
+    additional_notes TEXT,
+    status ENUM('Pending', 'Approved', 'Rejected') DEFAULT 'Pending',
+    room_id INT DEFAULT NULL,  -- New column to track the assigned room
+    FOREIGN KEY (student_id) REFERENCES students(id),
+    FOREIGN KEY (room_id) REFERENCES rooms(id)  -- Adding room reference
+);
+
+-- ==========================
+-- Leave Applications Table
+-- ==========================
+CREATE TABLE leave_requests (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    student_id INT NOT NULL,
+    student_name VARCHAR(100) NOT NULL,
+    leave_start_date DATE NOT NULL,
+    leave_end_date DATE NOT NULL,
+    reason TEXT NOT NULL,
+    status ENUM('Pending', 'Approved', 'Rejected') DEFAULT 'Pending',
+    feedback TEXT NULL,
+    file_path VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (student_id) REFERENCES students(id)
+);
+
+
+
+
+
+-- ==========================
+-- Attendance Table
+-- ==========================
+CREATE TABLE attendance (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    student_id INT NOT NULL,
+    date DATE NOT NULL, 
+    status ENUM('Present', 'Absent') DEFAULT 'Absent',
+    FOREIGN KEY (student_id) REFERENCES students(id)
+);
+
+
+-- ==========================
+-- Notices Table
+-- ==========================
+CREATE TABLE notices (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(150) NOT NULL,
+    note TEXT,
+    notice_path VARCHAR(255) DEFAULT NULL,
+    date_posted TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE notice_recipients (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    notice_id INT,
+    recipient ENUM('Student','Health Officer','Accountant') NOT NULL,
+    FOREIGN KEY (notice_id) REFERENCES notices(id) ON DELETE CASCADE
+);
+
+
+
+-- ==========================
+-- Complaints Table
+-- ==========================
+CREATE TABLE complaints (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    student_id INT NOT NULL,
+    fullname VARCHAR(100)NOT NULL,
+    category ENUM('Room', 'Mess', 'Health', 'Maintenance', 'Other') NOT NULL,
+    details TEXT NOT NULL,
+    status ENUM('Pending','Resolved','Escalated','Dismissed') DEFAULT 'Pending',
+    feedback TEXT DEFAULT NULL,
+    date_submitted TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (student_id) REFERENCES students(id)
+);
+
+-- ==========================
+-- Services Table
+-- ==========================
+CREATE TABLE services (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    student_id INT NOT NULL,
+    fullname VARCHAR(100),
+    service_type ENUM('Room Cleaning', 'Wi-Fi Issue', 'Laundry', 'Maintenance', 'Other') NOT NULL,
+	details TEXT NOT NULL,
+    preferred_date DATE NOT NULL,
+    assign_date DATE DEFAULT NULL,
+    status ENUM('Pending','Scheduled','Completed') DEFAULT 'Pending',
+    feedback TEXT DEFAULT NULL,
+    date_submitted TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (student_id) REFERENCES students(id)
+);
+
+-- ==========================
+-- Mess Menu Table
+-- ==========================
+
+CREATE TABLE mess_menu (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    day_of_week ENUM('Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday') NOT NULL,
+    breakfast VARCHAR(200),
+    lunch VARCHAR(200),
+    dinner VARCHAR(200)
+);
+
+CREATE TABLE mess_feedback (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    student_id VARCHAR(50) NOT NULL,
+    feedback TEXT NOT NULL,
+    submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+
+
+-- ==========================
+-- Health Applications Table
+-- ==========================
+
+CREATE TABLE health_applications (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    fullname VARCHAR(100) NOT NULL,
+    student_id INT NOT NULL,
+    issue_type ENUM('Fever', 'Injury', 'Checkup', 'Other') NOT NULL,
+    description TEXT NOT NULL,
+    appointment_date DATE NOT NULL,
+    emergency ENUM('Yes', 'No') NOT NULL,
+    submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	FOREIGN KEY (student_id) REFERENCES students(id)
+);
+
+
+-- ==========================
+-- Medicine Table
+-- ==========================
+
+CREATE TABLE medicines(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    quantity INT(11) NOT NULL,
+    threshold INT(11) NOT NULL DEFAULT 5,
+    expiry_date DATE,
+    supplier VARCHAR(100)
+);
+
+-- ==========================
+-- Student health feedback Table
+-- ==========================
+CREATE TABLE student_health_feedback (
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    student_id VARCHAR(20) NOT NULL,
+    student_name VARCHAR(100),
+    rating INT NOT NULL,
+    comments TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT `student_feedback_fk` FOREIGN KEY (`id`) REFERENCES `students` (`id`) ON DELETE CASCADE
+	
+);
+
+-- ==========================
+-- Health Reports Table
+-- ==========================
+CREATE TABLE `health_reports` (
+    `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `student_id` VARCHAR(50) NOT NULL,
+    `report_date` DATE NOT NULL,
+    `diagnosis` VARCHAR(255) NOT NULL,
+    `treatment` VARCHAR(255) NOT NULL,
+    `doctor_name` VARCHAR(100) NOT NULL,
+    `notes` TEXT
+
+);
+-- ==========================
+-- Doctor visits Table
+-- ==========================
+CREATE TABLE `doctor_visits` (
+    `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `doctor_name` VARCHAR(100) NOT NULL,
+    `visit_date` DATE NOT NULL,
+    `visit_time` TIME NOT NULL,
+    `purpose` VARCHAR(255) NOT NULL,
+    `max_slots` INT(11) NOT NULL DEFAULT 10,
+    `booked_slots` INT(11) NOT NULL DEFAULT 0,
+    `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+-- ==========================
+-- Salary Table
+-- ==========================
+
+CREATE TABLE staff_salary (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    fullname VARCHAR(100) NOT NULL,
+    role VARCHAR(50),
+    amount DECIMAL(10,2) NOT NULL,
+    payment_date DATE NOT NULL,
+    status ENUM('Paid','Pending') DEFAULT 'Pending'
+);
+
+
+-- ==========================
+-- Salary history Table
+-- ==========================
+CREATE TABLE `salary_history` (
+    `salary_id` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `username` VARCHAR(50) NOT NULL,
+    `month_year` VARCHAR(20) NOT NULL,
+    `basic_salary` DECIMAL(10,2) NOT NULL,
+    `allowances` DECIMAL(10,2) NOT NULL,
+    `deductions` DECIMAL(10,2) NOT NULL,
+    `net_salary` DECIMAL(10,2) NOT NULL,
+    `payment_status` VARCHAR(20) NOT NULL,
+    `payment_date` DATE DEFAULT NULL,
+    `processed_by` VARCHAR(100) NOT NULL
+);
+
+
+
+CREATE TABLE student_fees (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    student_id VARCHAR(50) NOT NULL,
+    student_name VARCHAR(100) NOT NULL,
+    amount DECIMAL(10,2) NOT NULL,
+    payment_date DATE NOT NULL,
+    status ENUM('Paid','Pending') NOT NULL
+);
+
+CREATE TABLE payment_reminders (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    student_id VARCHAR(50) NOT NULL,
+    student_name VARCHAR(100) NOT NULL,
+    email VARCHAR(150) NOT NULL,
+    due_date DATE NOT NULL,
+    message TEXT NOT NULL
+);
+
+CREATE TABLE expenses (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    expense_type VARCHAR(100) NOT NULL,
+    amount DECIMAL(10,2) NOT NULL,
+    date DATE NOT NULL,
+    notes TEXT
+);
+

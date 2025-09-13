@@ -1,0 +1,109 @@
+/* General Layout */
+#post-notice {
+    width: 100%;
+    max-width: 650px;
+    margin: 40px auto;
+    padding: 25px 30px;
+    border-radius: 15px;
+    background: #ffffff;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+#post-notice h2 {
+    text-align: center;
+    color: #003366;
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 25px;
+
+}
+
+/* Form Styling */
+#post-notice form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+#post-notice label {
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #444;
+    font-size: 15px;
+}
+
+#post-notice input[type="text"],
+#post-notice input[type="file"],
+#post-notice textarea {
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 15px;
+}
+
+#post-notice input[type="text"]:focus,
+#post-notice input[type="file"]:focus,
+#post-notice textarea:focus {
+    border-color: #003366;
+    box-shadow: 0 0 5px rgba(0, 51, 102, 0.3);
+    outline: none;
+}
+
+#post-notice textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+/* Recipients */
+.recipients {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.recipients label {
+    font-weight: 500;
+    font-size: 14px;
+    background: #f8f9fa;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.recipients input[type="checkbox"] {
+    accent-color: #003366;
+}
+
+.recipients label:hover {
+    background: #e9ecef;
+}
+
+/* Submit Button */
+.submit-btn {
+    margin-top: 15px;
+    padding: 14px;
+    background: linear-gradient(135deg, #003366, #00509e);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.submit-btn:hover {
+    opacity: 0.95;
+
+}
+.error {
+  color: red;
+  font-size: 13px;
+}
+
+.success {
+  color: green;
+  margin-top: 15px;
+  font-size: 15px;
+}

@@ -1,0 +1,124 @@
+/* General Layout for Leave Requests */
+#leave-requests {
+    width: 100%;
+    max-width: 1200px;
+    margin: 20 auto;
+    text-align: center;
+    font-family: Arial, sans-serif;
+}
+
+#leave-requests h2 {
+    font-size: 28px;
+    color: #003366;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+/* Container for the form */
+form {
+    width: 400px;
+    margin: 30px auto;
+    padding: 25px 20px;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+form label {
+    font-weight: bold;
+    color: #003366;
+    font-size: 14px;
+    text-align: left;
+}
+
+form input,
+form select,
+form textarea {
+    width: 100%;
+    padding: 8px 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-family: inherit;
+}
+
+.feedback-textarea {
+    min-height: 60px;
+    resize: none;
+}
+
+/* Submit Button Styling */
+.submit-btn {
+    padding: 10px 0;
+    border: none;
+    border-radius: 4px;
+    background-color: #003366;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.submit-btn:hover {
+    background-color: #0055aa;
+}
+
+/* Table Container */
+.table-container {
+    max-height: 500px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    margin-bottom: 50px;
+}
+
+/* Table Styling */
+.requests-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    min-width: 900px;
+
+}
+
+/* Table Cells Styling */
+.requests-table th,
+.requests-table td {
+    padding: 12px;
+    text-align: center;
+    border: 1px solid #ddd;
+    vertical-align: middle;
+    box-sizing: border-box;
+}
+
+.requests-table th {
+    background-color: #003366;
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.requests-table tbody tr:nth-child(even) {
+    background-color: #f5f5f5;
+}
+
+
+
+.error {
+    color: red;
+    font-size: 13px;
+}
+
+.success {
+    color: green;
+    margin-top: 15px;
+    font-size: 15px;
+}

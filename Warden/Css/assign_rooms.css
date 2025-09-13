@@ -1,0 +1,79 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f7f9fc;
+    margin: 0;
+    padding: 0;
+}
+
+main#assign-rooms {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 10px;
+}
+
+h2, h3 {
+    color: #003366;
+    text-align: center;
+}
+
+.table-container {
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    margin: 20px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 700px;
+}
+
+th, td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+th {
+    background-color: #003366;
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.assign-btn {
+    padding: 8px 15px;
+    margin-left: 5px;
+    background-color: #003366;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.assign-btn:hover {
+    opacity: 0.8;
+}
+
+select {
+    padding: 6px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+/* Room availability colors */
+.available td {
+    background-color: #d4edda; /* green */
+}
+
+.partial td {
+    background-color: #fff3cd; /* yellow */
+}
+
+.full td {
+    background-color: #f8d7da; /* red */
+    color: #721c24;
+}
