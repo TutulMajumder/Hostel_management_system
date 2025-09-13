@@ -19,19 +19,6 @@
 
 <main class="dashboard">
 
-  <h1>Welcome, <?php echo $_SESSION["username"]; ?> </h1>
-
-
-  <?php
-
-  if (isset($_COOKIE["username"])) {
-
-      echo "<p>Welcome back, " . $_COOKIE["username"] . " (from cookie)</p>";
-
-  }
-
-  ?>
-
   <div class="card-container">
 
     <a href="apply-room.php" class="card">
