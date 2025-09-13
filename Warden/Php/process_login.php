@@ -71,6 +71,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 session_regenerate_id(true);
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['email'] = $user['email'];
+                $_SESSION['name'] = $user['fullname'] ?? $user['name'] ?? $user['username'] ?? 'User';
                 $_SESSION['role'] = $roles[$table];
                 $_SESSION['user_table'] = $table;
 
