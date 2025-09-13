@@ -25,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $user_tables = [
         'students' => 'Student/View/dashboard.php',
         'wardens' => 'warden/View/warden_dashboard.php',
-        'health_officers' => 'Health_officer/View/health_dashboard.php',
+        'health_officers' => 'Health_officer/view/dashboard.php',
         'accountants' => 'Account/View/dashboard.php'
     ];
 

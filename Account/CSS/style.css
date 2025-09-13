@@ -10,7 +10,7 @@ header {
     color: white;
     text-align: center;
     padding: 20px 0;
-    position: relative; /* So logout button can be placed inside header */
+    position: relative; 
 }
 
 #feature-cards {
@@ -62,7 +62,7 @@ footer {
     margin-top: 30px;
 }
 
-/* Logout Button */
+
 .logout-container {
     position: absolute;
     top: 20px;
