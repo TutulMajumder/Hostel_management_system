@@ -1,0 +1,83 @@
+.dashboard {
+  padding: 50px;
+  text-align: center;
+  font-family: Arial, sans-serif;
+}
+
+.dashboard h1 {
+  font-size: 30px;
+  margin-bottom: 30px;
+}
+
+.menu-table {
+  width: 90%;
+  margin: 0 auto 30px auto;
+  border-collapse: collapse;
+}
+
+.menu-table th,
+.menu-table td {
+  border: 1px solid #2c3e70;
+  padding: 10px;
+  text-align: center;
+}
+
+.menu-table th {
+  background-color: #2c3e70;
+  color: white;
+}
+
+.menu-table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.feedback-form {
+  max-width: 500px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.feedback-form textarea {
+  width: 100%;
+  height: 80px;
+  padding: 10px;
+}
+
+.feedback-form input[type=submit] {
+  width: 100%;
+  background-color: #2c3e70;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.feedback-form input[type=submit]:hover {
+  background-color: #34495e;
+}
+
+.error {
+  color: red;
+  font-size: 13px;
+}
+
+.success {
+  color: green;
+  margin-top: 15px;
+  font-size: 15px;
+}
+
+.back-btn {
+  display: inline-block;
+  margin-top: 15px;
+  text-decoration: none;
+  color: #2c3e70;
+  font-weight: bold;
+}
+
+.back-btn:hover {
+  color: #34495e;
+}

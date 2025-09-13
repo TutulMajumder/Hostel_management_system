@@ -1,0 +1,77 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f6f9;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 400px; /* slightly narrower */
+    margin: 40px auto;
+    background: #fff;
+    padding: 20px; /* reduced padding */
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+}
+
+h2 {
+    text-align: center;
+    color: #e91515;
+    margin-bottom: 20px;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 8px; /* smaller padding */
+    margin: 6px 0; /* smaller margin */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    box-sizing: border-box; /* ensures padding doesn't expand width */
+}
+
+textarea {
+    height: 50px; /* smaller height */
+    resize: vertical; /* user can resize if needed */
+}
+
+input[type=submit] {
+    background: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 15px;
+    padding: 10px;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+
+input[type=submit]:hover {
+    background: #0056b3;
+}
+
+.error {
+    color: red;
+    font-size: 12px; /* slightly smaller font */
+}
+
+.success {
+    color: green;
+    text-align: center;
+    margin-top: 15px;
+}
+
+
+
+.gender-options {
+    display: flex;           /* Arrange items horizontally */
+    gap: 20px;               /* Space between options */
+    align-items: center;     /* Vertically align text + radio */
+    margin-top: 5px;
+}
+
+.gender-item {
+    display: flex;           /* Keep radio + text together */
+    align-items: center;
+    gap: 5px;                /* Space between radio button and text */
+}

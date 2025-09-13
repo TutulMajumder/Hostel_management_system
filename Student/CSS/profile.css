@@ -1,0 +1,117 @@
+/* Reset defaults */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #e0e7ef; /* Slight background color */
+    min-height: 100vh;
+}
+
+/* Center the container vertically and horizontally */
+.container {
+    background-color: #ffffff;
+    max-width: 600px;
+    margin: 60px auto; /* space from header */
+    padding: 40px 50px;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Headings */
+.container h2, .container h3 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 25px;
+}
+
+/* Labels */
+form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #34495e;
+}
+
+/* Inputs & Textarea */
+form input[type="text"],
+form input[type="email"],
+form input[type="password"],
+form input[type="date"],
+form textarea {
+    width: 100%;
+    padding: 10px 12px;
+    margin-bottom: 15px;
+    border: 1px solid #bdc3c7;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #2c3e50;
+}
+
+form textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+/* Buttons */
+.btn {
+    background-color: #2980b9;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 15px;
+    margin-right: 10px;
+    transition: all 0.3s;
+}
+
+.btn:hover {
+    background-color: #3498db;
+}
+
+.btn-secondary {
+    background-color: #7f8c8d;
+}
+
+.btn-secondary:hover {
+    background-color: #95a5a6;
+}
+
+.delete-btn {
+    background-color: #e74c3c;
+    margin-top: 15px;
+}
+
+.delete-btn:hover {
+    background-color: #c0392b;
+}
+
+/* Messages */
+.success {
+    color: green;
+    text-align: center;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+.error {
+    color: red;
+    text-align: center;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+/* Forms - make them centered */
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Adjust buttons container spacing */
+form button {
+    margin-top: 10px;
+}

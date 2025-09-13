@@ -1,0 +1,83 @@
+1. CREATE TABLE room_applications (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    fullname VARCHAR(100) NOT NULL,
+    student_id VARCHAR(50) NOT NULL,
+    semester VARCHAR(20) NOT NULL,
+    department VARCHAR(50) NOT NULL,
+    room_preference VARCHAR(20) NOT NULL,
+    hostel_block VARCHAR(20) NOT NULL,
+    additional_notes TEXT,
+    status ENUM('Pending', 'Approved', 'Rejected') DEFAULT 'Pending',
+    applied_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT INTO room_applications (fullname, student_id, semester, department, room_preference, hostel_block, additional_notes, status)
+VALUES
+('Alice Johnson', '23-50158-1', '1st', 'CSE', 'Single', 'A Block', '', 'Approved'),
+('Bob Smith', '23-50155-1', '2nd', 'EEE', 'Double', 'B Block', '', 'Pending'),
+('Charlie Brown', '23-50159-1', '3rd', 'BBA', 'Shared', 'C Block', '', 'Rejected'),
+('Diana Prince', '23-50160-1', '4th', 'CSE', 'Single', 'A Block', '', 'Approved');
+
+
+2. CREATE TABLE complaints (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    fullname VARCHAR(100) NOT NULL,
+    student_id VARCHAR(50) NOT NULL,
+    category ENUM('Room', 'Mess', 'Health', 'Maintenance', 'Other') NOT NULL,
+    details TEXT NOT NULL,
+    submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+3. CREATE TABLE health_applications (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    fullname VARCHAR(100) NOT NULL,
+    student_id VARCHAR(50) NOT NULL,
+    issue_type ENUM('Fever', 'Injury', 'Checkup', 'Other') NOT NULL,
+    description TEXT NOT NULL,
+    appointment_date DATE NOT NULL,
+    emergency ENUM('Yes', 'No') NOT NULL,
+    submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+
+4. CREATE TABLE mess_menu (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    day_of_week ENUM('Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday') NOT NULL,
+    breakfast VARCHAR(200),
+    lunch VARCHAR(200),
+    dinner VARCHAR(200)
+);
+
+ 5. CREATE TABLE mess_feedback (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    student_id VARCHAR(50) NOT NULL,
+    feedback TEXT NOT NULL,
+    submitted at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT INTO mess_menu (day_of_week, breakfast, lunch, dinner) VALUES
+('Monday', 'Pancakes, Tea', 'Rice, Chicken Curry, Salad', 'Chapati, Vegetable Curry'),
+('Tuesday', 'Oatmeal, Milk', 'Fried Rice, Fish Fry, Soup', 'Noodles, Veg Stir Fry'),
+('Wednesday', 'Bread, Egg, Juice', 'Rice, Beef Curry, Salad', 'Paratha, Dal, Yogurt'),
+('Thursday', 'Cereal, Milk', 'Rice, Chicken Roast, Vegetable Curry', 'Chapati, Paneer Curry'),
+('Friday', 'Pancakes, Tea', 'Rice, Fish Curry, Salad', 'Noodles, Vegetable Soup'),
+('Saturday', 'Omelette, Toast, Juice', 'Biryani, Raita, Salad', 'Paratha, Vegetable Curry'),
+('Sunday', 'French Toast, Milk', 'Rice, Chicken Curry, Dal', 'Chapati, Mixed Veg Curry');
+
+6 . CREATE TABLE mess_feedback (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    feedback TEXT NOT NULL,
+    submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+7. CREATE TABLE service_requests (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    fullname VARCHAR(100) NOT NULL,
+    student_id VARCHAR(50) NOT NULL,
+    service_type ENUM('Room Cleaning', 'Wi-Fi Issue', 'Laundry', 'Maintenance', 'Other') NOT NULL,
+    details TEXT NOT NULL,
+    preferred_datetime DATETIME NOT NULL,
+    submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
