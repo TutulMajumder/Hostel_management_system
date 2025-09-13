@@ -25,8 +25,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $user_tables = [
         'students' => 'Student/View/dashboard.php',
         'wardens' => 'warden/View/warden_dashboard.php',
-        'health_officers' => 'View/health_dashboard.php',
-        'accountants' => 'View/account_dashboard.php'
+        'health_officers' => 'Health_officer/View/health_dashboard.php',
+        'accountants' => 'Account/View/dashboard.php'
     ];
 
     $roles = [
@@ -74,7 +74,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION['role'] = $roles[$table];
                 $_SESSION['user_table'] = $table;
 
-                header("Location: /HOSTEL-MANAGEMENT-SYSTEM/$redirect");
+                header("Location: /hostel_management_system/$redirect");
                 exit();
             } else {
                 $_SESSION['error'] = "Invalid email or password.";
