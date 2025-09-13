@@ -1,19 +1,19 @@
-<?php
-if (session_status() === PHP_SESSION_NONE) {
+<!-- <?php
+// if (session_status() === PHP_SESSION_NONE) {
 
-    session_start();
+//     session_start();
 
-}
+// }
 
 
-if (!isset($_SESSION['username']) || !isset($_SESSION['id'])) {
+// if (!isset($_SESSION['username']) || !isset($_SESSION['id'])) {
 
-    header("Location: ../login.php");
+//     header("Location: ../login.php");
 
-    exit();
-}
+//     exit();
+// }
 
-?>
+?> -->
 
 <link rel="stylesheet" href="../CSS/Header.css">
 
@@ -44,7 +44,7 @@ if (!isset($_SESSION['username']) || !isset($_SESSION['id'])) {
             <img src="../img/profile.jpg" alt="Profile" class="profile-pic">
 
         </a>
-        <span class="username"><?php echo $_SESSION['username']; ?></span>
+        <span class="username"></span>
 
         <a href="logout.php">
 
