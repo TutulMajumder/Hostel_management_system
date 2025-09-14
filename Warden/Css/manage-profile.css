@@ -80,3 +80,18 @@ button.btn:hover,
 a.btn:hover {
     background-color: #0055aa;
 }
+
+
+.error {
+  color: red;
+  font-size: 14px;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.success {
+  color: green;
+  font-size: 14px;
+  font-weight: bold;
+  margin-top: 10px;
+}

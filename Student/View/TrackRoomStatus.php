@@ -18,7 +18,7 @@ include "../php/track_room_validate.php";
 </head>
 <body>
 
-<?php include 'header.php'; ?> <!-- Header -->
+<?php include 'header.php'; ?> 
 
 <main class="dashboard">
 

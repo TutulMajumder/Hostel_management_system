@@ -34,8 +34,15 @@ include "../Php/process_attendabce.php";
                     <option value="Absent">Absent</option>
                 </select>
 
-                <span class="error"><?php echo $errors; ?></span>
-                <span class="success"><?php echo $success; ?></span>
+                <?php if (isset($_SESSION['errors'])): ?>
+                    <p class="error"><?php echo $_SESSION['errors'];
+                                        unset($_SESSION['errors']); ?></p>
+                <?php endif; ?>
+
+                <?php if (isset($_SESSION['success'])): ?>
+                    <p class="success"><?php echo $_SESSION['success'];
+                                        unset($_SESSION['success']); ?></p>
+                <?php endif; ?>
 
                 <button type="submit" class="submit-btn">Submit Attendance</button>
             </form>
@@ -54,23 +61,23 @@ include "../Php/process_attendabce.php";
                     </thead>
                     <tbody id="attendance-table-body">
                         <?php
-                                // Fetch attendance data from the database
-                                $query = "SELECT * FROM attendance";
-                                $result = $conn->query($query);
-                                if ($result->num_rows > 0) {
-                                    while ($row = $result->fetch_assoc()) {
-                                        echo "<tr>";
-                                        echo "<td>" . $row['id'] . "</td>";
-                                        echo "<td>" . $row['student_id'] . "</td>";
-                                        echo "<td>" . $row['fullname'] . "</td>";
-                                        echo "<td>" . $row['status'] . "</td>";
-                                        echo "<td>" . $row['date'] . "</td>";
-                                        echo "</tr>";
-                                    }
-                                } else {
-                                    echo "<tr><td colspan='5'>No attendance records found.</td></tr>";
-                                }
-                                ?>
+                        // Fetch attendance data from the database
+                        $query = "SELECT * FROM attendance";
+                        $result = $conn->query($query);
+                        if ($result->num_rows > 0) {
+                            while ($row = $result->fetch_assoc()) {
+                                echo "<tr>";
+                                echo "<td>" . $row['id'] . "</td>";
+                                echo "<td>" . $row['student_id'] . "</td>";
+                                echo "<td>" . $row['fullname'] . "</td>";
+                                echo "<td>" . $row['status'] . "</td>";
+                                echo "<td>" . $row['date'] . "</td>";
+                                echo "</tr>";
+                            }
+                        } else {
+                            echo "<tr><td colspan='5'>No attendance records found.</td></tr>";
+                        }
+                        ?>
                     </tbody>
                 </table>
             </div>

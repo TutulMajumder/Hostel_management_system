@@ -32,7 +32,7 @@ include "../Php/process_login.php";
                 <button type="submit" class="submit-btn">Login</button>
 
                 <div class="links">
-                    <a href="register.php">Don't have an account? Register</a>
+                    <a href="../../Student/View/register_form.php">Don't have an account? Register</a>
                     <a href="forgot_password.php">Forgot Password?</a>
                 </div>
             </form>

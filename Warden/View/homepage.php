@@ -9,8 +9,8 @@
     <header>
         <div class="logo">Hostel Management System</div>
         <div class="header-actions">
-            <a href="#" class="nav-link">About</a>
-            <a href="#" class="nav-link">Contact</a>
+            <a href="about_us.php" class="nav-link">About</a>
+            <a href="contact_us.php" class="nav-link">Contact</a>
             <a href="../../Student/View/register_form.php" class="nav-link">Register</a>
             <a href="login.php" class="nav-link">Login</a>
         </div>
@@ -27,7 +27,7 @@
                 <div class="info-box">
                     <h3>Hostel Overview</h3>
                     <p>Our system streamlines hostel management by organizing student records, room assignments, attendance tracking, and service requests.</p>
-                    <a href="about.php" class="info-link">Learn More</a>
+                    <a href="about_us.php" class="info-link">Learn More</a>
                 </div>
 
                 <div class="info-box">

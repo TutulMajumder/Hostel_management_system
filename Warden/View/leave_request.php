@@ -37,8 +37,15 @@ include "../Php/process_leave_request.php";
                 <label for="feedback">Feedback:</label>
                 <textarea name="feedback" id="feedback" class="feedback-textarea" placeholder="Enter feedback..."></textarea>
 
-                <span class="error"><?php echo $errors; ?></span>
-                <span class="success"><?php echo $success; ?></span>
+                <?php if (isset($_SESSION['errors'])): ?>
+                    <p class="error"><?php echo $_SESSION['errors'];
+                                        unset($_SESSION['errors']); ?></p>
+                <?php endif; ?>
+
+                <?php if (isset($_SESSION['success'])): ?>
+                    <p class="success"><?php echo $_SESSION['success'];
+                                        unset($_SESSION['success']); ?></p>
+                <?php endif; ?>
                 <button type="submit" class="submit-btn">Submit</button>
             </form>
 
@@ -75,7 +82,7 @@ include "../Php/process_leave_request.php";
                                 echo "</tr>";
                             }
                         } else {
-                            echo "<tr><td colspan='7'>No attendance records found.</td></tr>";
+                            echo "<tr><td colspan='7'>No Leave requests records found.</td></tr>";
                         }
                         ?>
                     </tbody>

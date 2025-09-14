@@ -25,8 +25,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $user_tables = [
         'students' => 'Student/View/dashboard.php',
         'wardens' => 'warden/View/warden_dashboard.php',
-        'health_officers' => 'View/health_dashboard.php',
-        'accountants' => 'View/account_dashboard.php'
+        'health_officers' => 'Health_officer/view/dashboard.php',
+        'accountants' => 'Account/View/dashboard.php'
     ];
 
     $roles = [
@@ -60,8 +60,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if ($password === $user['password'] || password_verify($password, $user['password'])) {
                 // Remember Me Cookie
                 if ($remember) {
-                    setcookie('remember_email', $email, time() + (86400 * 7), "/");
-                    setcookie('remember_pass', $password, time() + (86400 * 7), "/");
+                    setcookie('remember_email', $email, time() +86400, "/");
+                    setcookie('remember_pass', $password, time() + 86400 , "/");
                 } else {
                     setcookie('remember_email', '', time() - 3600, "/");
                     setcookie('remember_pass', '', time() - 3600, "/");
@@ -71,10 +71,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 session_regenerate_id(true);
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['email'] = $user['email'];
+                $_SESSION['name'] = $user['fullname'] ?? $user['name'] ?? $user['username'] ?? 'User';
                 $_SESSION['role'] = $roles[$table];
                 $_SESSION['user_table'] = $table;
 
-                header("Location: /HOSTEL-MANAGEMENT-SYSTEM/$redirect");
+                header("Location: /hostel_management_system/$redirect");
                 exit();
             } else {
                 $_SESSION['error'] = "Invalid email or password.";
@@ -92,3 +93,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     }
 }
+?>

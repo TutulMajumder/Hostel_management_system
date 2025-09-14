@@ -111,7 +111,7 @@
 
   <p class="success"><?php echo $success; ?></p>
 
-  <p>Already registered? <a href="../View/login.php">Login here</a></p>
+  <p>Already registered? <a href="../../Warden/View/login.php">Login here</a></p>
 
 </div>
 

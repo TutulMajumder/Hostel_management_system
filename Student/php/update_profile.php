@@ -1,29 +1,64 @@
 <?php
+
 session_start();
+
 include "../DB/apply_room_DB.php";
 
-if (!isset($_SESSION['id'])) {
+
+
+
+if (!isset($_SESSION['role']) || $_SESSION['role'] != 'student' || !isset($_SESSION['user_id'])) {
+
     header("Location: ../View/login.php");
+
     exit();
+
 }
 
-$student_id = $_SESSION['id'];
+
+$student_id = $_SESSION['user_id'];
+
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $phone = $_POST['phone'];
-    $semester = $_POST['semester'];
-    $department = $_POST['department'];
-    $dob = $_POST['dob'];
-    $address = $_POST['address'];
 
-    $stmt = $conn->prepare("UPDATE students SET phone=?, semester=?, department=?, dob=?, address=? WHERE id=?");
-    $stmt->bind_param("sssssi", $phone, $semester, $department, $dob, $address, $student_id);
+
+   
+    $phone = trim($_POST['phone'] ?? '');
+
+    $dob = trim($_POST['dob'] ?? '');
+
+    $address = trim($_POST['address'] ?? '');
+
+
+    
+    if (empty($phone) || empty($dob) || empty($address)) {
+
+        header("Location: ../View/profile.php?error=Please fill in all required fields");
+
+        exit();
+
+    }
+
+    
+    $stmt = $conn->prepare("UPDATE students SET phone=?, dob=?, address=? WHERE id=?");
+
+
+    $stmt->bind_param("sssi", $phone, $dob, $address, $student_id);
+
+
 
     if ($stmt->execute()) {
+
+
         header("Location: ../View/profile.php?success=Profile updated successfully");
+
     } else {
+
         header("Location: ../View/profile.php?error=Error updating profile");
+
     }
+
     exit();
-}
-?>
+
+
+ }

@@ -3,12 +3,14 @@ include "../Php/process_notice.php";
 ?>
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Post Notice - Hostel Management System</title>
     <link rel="stylesheet" href="../Css/topbar.css">
     <link rel="stylesheet" href="../Css/post_notice.css">
 </head>
+
 <body>
 
     <!-- Header -->
@@ -40,8 +42,15 @@ include "../Php/process_notice.php";
                 <!-- Additional Information -->
                 <label for="note">Additional Information:</label>
                 <textarea id="note" name="note" placeholder="Add any extra details here"></textarea>
-                <span class="error"><?php echo $errors; ?></span>
-                <span class="success"><?php echo $success; ?></span>
+                <?php if (isset($_SESSION['errors'])): ?>
+                    <p class="error"><?php echo $_SESSION['errors'];
+                                        unset($_SESSION['errors']); ?></p>
+                <?php endif; ?>
+
+                <?php if (isset($_SESSION['success'])): ?>
+                    <p class="success"><?php echo $_SESSION['success'];
+                                        unset($_SESSION['success']); ?></p>
+                <?php endif; ?>
                 <!-- Submit Button -->
                 <button type="submit" name="submit" class="submit-btn">Post Notice</button>
 
@@ -53,4 +62,5 @@ include "../Php/process_notice.php";
     <?php include "footer.php"; ?>
 
 </body>
+
 </html>

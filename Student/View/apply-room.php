@@ -1,18 +1,4 @@
 <?php
-session_start();
-
-if (!isset($_SESSION['username'])) {
-
-    header("Location: login.php");
-
-    exit();
-}
-
-?>
-
-
-
-<?php
 
 include "../php/apply_room_validate.php"; 
 

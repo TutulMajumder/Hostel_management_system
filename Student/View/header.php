@@ -1,58 +1,55 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) {
+
+if (session_status() == PHP_SESSION_NONE) {
 
     session_start();
 
 }
 
 
-if (!isset($_SESSION['username']) || !isset($_SESSION['id'])) {
+$username = 'Guest';
 
-    header("Location: ../login.php");
+if (isset($_SESSION['role']) && $_SESSION['role'] == 'student') {
+  
+   
+    $username = $_SESSION['email'] ?? 'Guest';
 
-    exit();
-}
 
+  }
 ?>
+
 
 <link rel="stylesheet" href="../CSS/Header.css">
 
+
 <header class="main-header">
 
-    <div class="logo">
+  <div class="logo">
 
-        <img src="../img/Home.jpg" alt="Logo" class="logo-img">
+    <img src="../img/Home.jpg" alt="Logo" class="logo-img">
 
-        <span class="logo-text">Hostel Management System</span>
+    <span class="logo-text">Hostel Management System</span>
 
-    </div>
+  </div>
 
-    <div class="links">
+  <div class="profile-section">
 
-        <a href="../index.php">Home</a>
+    <a href="../view/profile.php">
 
-        <a href="../about.php">About Us</a>
+      <img src="../img/profile.jpg" alt="Profile" class="profile-pic">
 
-        <a href="../contact.php">Contact</a>
+    </a>
 
-    </div>
+    <span class="username"><?php echo htmlspecialchars($username); ?></span>
 
-    <div class="profile-section">
+    <a href="../view/logout.php">
 
-        <a href="profile.php">
+      <img src="../img/logout.jpg" alt="Logout" class="logout-icon">
 
-            <img src="../img/profile.jpg" alt="Profile" class="profile-pic">
+    </a>
 
-        </a>
-        <span class="username"><?php echo $_SESSION['username']; ?></span>
 
-        <a href="logout.php">
+  </div>
 
-            <img src="../img/logout.jpg" alt="Logout" class="logout-icon">
-
-        </a>
-
-    </div>
-    
+  
 </header>
-

@@ -25,7 +25,7 @@ setcookie("username", "", time() - 3600, "/"); // remove cookie
 
     <h2>You are logged out.</h2>
 
-    <a href="login.php"><button>Login Again</button></a>
+    <a href="../../Warden/View/login.php"><button>Login Again</button></a>
     
   </div>
 </body>

@@ -1,4 +1,5 @@
 <?php
+session_start();
 include "../Db/config.php";
 
 
@@ -11,8 +12,6 @@ if ($result && $result->num_rows > 0) {
         $complaints[] = $row;
     }
 }
-$errors = $success = '';
-
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $complaint_id = trim($_POST['complaint_id'] ?? '');
     $status = trim($_POST['status'] ?? 'pending');
@@ -21,20 +20,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Validate form fields
     $allowed_status = ['Resolved', 'Escalated'];
     if (empty($complaint_id) || empty($feedback) || !in_array($status, $allowed_status, true)) {
-        $errors = "All fields are required and status must be 'Resolved' or 'Escalated'";
-        return;
+        $_SESSION['errors']  = "All fields are required and status must be 'Resolved' or 'Escalated'";
+
     }
     if (!ctype_digit($complaint_id)) {
-        $errors = "Complaint ID can only be numbers";
+        $_SESSION['errors']  = "Complaint ID can only be numbers";
     }
     if (!preg_match('/^[a-zA-Z]/', $feedback)) {
-        $errors = "Feedback must start with a letter and cannot start with a number.";
-        return;
+        $_SESSION['errors']  = "Feedback must start with a letter and cannot start with a number.";
+
     }
 
     if (strlen($feedback) > 200) {
-        $errors = "Feedback must not exceed 200 characters.";
-        return;
+        $_SESSION['errors']  = "Feedback must not exceed 200 characters.";
+
     } else {
         $complaint_query = "SELECT COUNT(*) as count From complaints WHERE id=?";
         $complaint_stmt = $conn->prepare($complaint_query);
@@ -45,15 +44,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $complaint_stmt->close();
 
         if ($row['count'] == 0) {
-            $errors = "Complaint ID not Found.Please Enter a valid Complaint ID.";
+            $_SESSION['errors']  = "Complaint ID not Found.Please Enter a valid Complaint ID.";
         } else {
             $sql = "UPDATE complaints SET status=?, feedback=? WHERE id=?";
 
             $stmt = $conn->prepare($sql);
 
             if (!$stmt) {
-                $errors = "Database prepare error: " . $conn->error;
-                return;
+                $_SESSION['errors']  = "Database prepare error: " . $conn->error;
+        
             } else {
                 $stmt->bind_param('ssi', $status, $feedback, $complaint_id);
 
@@ -81,14 +80,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             $complaints[] = $row; // store each row in array
                         }
                     }
-                    $success = "Complaints updated successfully.";
+                    $_SESSION['success']  = "Complaints updated successfully.";
                     // $complaints_data = $complaints;
                 } else {
-                    $errors = 'Database error' . $stmt->error;
+                    $_SESSION['errors']  = 'Database error' . $stmt->error;
                 }
+                $stmt->close();
             }
-
-            $stmt->close();
         }
     }
+    header("Location: ../View/handle_complaint.php");
+    exit();
 }
