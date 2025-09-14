@@ -36,8 +36,15 @@ include '../Php/process_complaint.php';
                 <label for="feedback">Feedback</label>
                 <textarea name="feedback" id="feedback" class="feedback-textarea" placeholder="Enter feedback..."></textarea>
 
-                <span class="error"><?php echo $errors; ?></span>
-                <span class="success"><?php echo $success; ?></span>
+                <?php if (isset($_SESSION['errors'])): ?>
+                    <p class="error"><?php echo $_SESSION['errors'];
+                                        unset($_SESSION['errors']); ?></p>
+                <?php endif; ?>
+
+                <?php if (isset($_SESSION['success'])): ?>
+                    <p class="success"><?php echo $_SESSION['success'];
+                                        unset($_SESSION['success']); ?></p>
+                <?php endif; ?>
 
                 <button type="submit" class="submit-btn">Save</button>
             </form>
@@ -86,13 +93,13 @@ include '../Php/process_complaint.php';
                         if ($result->num_rows > 0) {
                             while ($row = $result->fetch_assoc()) {
                                 echo "<tr>";
-                                echo " <td>" . $complaint['id'] . "</td>";
-                                echo " <td>" . $complaint['student_id'] . "</td>";
-                                echo " <td>" . $complaint['fullname'] . "</td>";
-                                echo "  <td>" . $complaint['category'] . "</td>";
-                                echo "  <td>" . $complaint['details'] . "</td>";
-                                echo "  <td>" . $complaint['status'] . "</td>";
-                                echo "  <td>" . $complaint['feedback'] . "</td>";
+                                echo " <td>" . $row['id'] . "</td>";
+                                echo " <td>" . $row['student_id'] . "</td>";
+                                echo " <td>" . $row['fullname'] . "</td>";
+                                echo " <td>" . $row['category'] . "</td>";
+                                echo " <td>" . $row['details'] . "</td>";
+                                echo " <td>" . $row['status'] . "</td>";
+                                echo " <td>" . $row['feedback'] . "</td>";
                                 echo "</tr>";
                             }
                         } else {

@@ -1,7 +1,7 @@
 <?php
+session_start();
 include "../Db/config.php";
 
-$errors = $success = "";
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $notice_title = trim($_POST['notice_title'] ?? '');
     $notice_recipients = $_POST['recipients'] ?? [];
@@ -11,22 +11,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Required fields validation
     if (empty($notice_title) || empty($notice_recipients) || empty($note)) {
-        $errors .= "All fields are required. ";
+        $_SESSION['errors'] .= "All fields are required. ";
     }
 
     // Length checks
     if (strlen($notice_title) > 150) {
-        $errors .= "Notice title cannot exceed 150 characters. ";
+        $_SESSION['errors'] .= "Notice title cannot exceed 150 characters. ";
     }
     if (strlen($note) > 500) {
-        $errors .= "Additional information must not exceed 500 characters. ";
+        $_SESSION['errors'] .= "Additional information must not exceed 500 characters. ";
     }
 
     // Recipient validation (check if all recipients are valid)
     $allowed_recipients = ['Student', 'Health Officer', 'Accountant'];
     foreach ($notice_recipients as $r) {
         if (!in_array($r, $allowed_recipients, true)) {
-            $errors .= "Invalid recipient selected. ";
+            $_SESSION['errors'] .= "Invalid recipient selected. ";
         }
     }
 
@@ -35,14 +35,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $allowed_ext = ['jpg', 'jpeg', 'png', 'pdf'];
         $ext = strtolower(pathinfo($notice_file['name'], PATHINFO_EXTENSION));
         if (!in_array($ext, $allowed_ext)) {
-            $errors .= "Invalid file type. Only JPG, PNG, and PDF are allowed. ";
+            $_SESSION['errors'] .= "Invalid file type. Only JPG, PNG, and PDF are allowed. ";
         }
         if ($notice_file['size'] > 2 * 1024 * 1024) {
-            $errors .= "File size cannot exceed 2 MB. ";
+            $_SESSION['errors'] .= "File size cannot exceed 2 MB. ";
         }
 
         // Proceed only if there are no errors so far
-        if (empty($errors)) {
+        if (empty($_SESSION['errors'])) {
             // Directory setup for uploads
             $upload_dir = "../uploads/notices/";
             if (!is_dir($upload_dir)) {
@@ -55,11 +55,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if (move_uploaded_file($notice_file['tmp_name'], $target)) {
                 $notice_path = $target;  
             } else {
-                $errors .= "Failed to save uploaded file. ";
+                $_SESSION['errors'] .= "Failed to save uploaded file. ";
             }
         }
     }
-    if (empty($errors)) {
+    if (empty($_SESSION['errors'])) {
         $sql = "INSERT INTO notices (title, note, notice_path) VALUES (?, ?, ?)";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param('sss', $notice_title, $note, $notice_path);
@@ -74,11 +74,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $rec_stmt->execute();
             }
             $rec_stmt->close();
-            $success = "Notice posted successfully.";
+            $$_SESSION['success'] = "Notice posted successfully.";
         } else {
-            $errors = "Database error: " . $conn->error;
+            $_SESSION['errors'] = "Database error: " . $conn->error;
         }
         $stmt->close();
     }
+    header("Location: ../View/post_notice.php");
+    exit();
+
 }
 ?>

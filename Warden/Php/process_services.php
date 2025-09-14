@@ -1,8 +1,7 @@
 <?php
+session_start();
 include '../db/config.php';
 
-$errors = '';
-$success = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $service_id    = trim($_POST['service_id'] ?? '');
@@ -15,27 +14,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $allowed_status = ['Scheduled', 'Completed','In Progress'];
     if (empty($service_id) || empty($assign_date) || empty($feedback) || !in_array($status, $allowed_status, true)) {
-        $errors = "All fields are required and Status must be 'Scheduled', , 'Completed','In Progress'.";
-        return;
+        $_SESSION['errors'] = "All fields are required and Status must be 'Scheduled', , 'Completed','In Progress'.";
     }
     $today = date('Y-m-d');
     if ($assign_date < $today) {
-        $errors = "Assigned date cannot be in the past. It must be today or a future date.";
-        return;
+        $_SESSION['errors'] = "Assigned date cannot be in the past. It must be today or a future date.";
     }
     if (!ctype_digit($service_id)) {
-        $errors = "Service ID can be only numbers";
-        return;
+        $_SESSION['errors'] = "Service ID can be only numbers";
     }
 
     if (!preg_match('/^[a-zA-Z]/', $feedback)) {
-        $errors = "Feedback must start with a letter and cannot start with a number.";
-        return;
+        $_SESSION['errors'] = "Feedback must start with a letter and cannot start with a number.";
     }
     // Validate feedback length
     if (strlen($feedback) > 200) {
-        $errors = "Feedback must not exceed 200 characters.";
-        return;
+        $_SESSION['errors'] = "Feedback must not exceed 200 characters.";
     } else {
         $service_query = "SELECT COUNT(*) as count From services WHERE id=?";
         $service_stmt = $conn->prepare($service_query);
@@ -45,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $row = $check_result->fetch_assoc();
         $service_stmt->close();
         if ($row['count'] == 0) {
-            $errors = "Service ID not Found.Please Enter a valid Service ID.";
+            $_SESSION['errors'] = "Service ID not Found.Please Enter a valid Service ID.";
         } else {
             $sql = "UPDATE services
                SET assign_date = ?, `status` = ?, feedback = ?
@@ -53,8 +47,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $stmt = $conn->prepare($sql);
             if (!$stmt) {
-                $errors = "Database prepare error: " . $conn->error;
-                return;
+                $_SESSION['errors'] = "Database prepare error: " . $conn->error;
+    
             } else {
 
                 $stmt->bind_param("sssi", $assign_date, $status, $feedback, $service_id);
@@ -77,14 +71,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $updated_service .= '</tr>';
                     }
                     // Store success message and the updated complaints data
-                    $success = "Service Request updated successfully.";
+                    $$_SESSION['success'] = "Service Request updated successfully.";
                     $complaints_data = $updated_service;
                 } else {
-                    $errors = "Database error: " . $stmt->error;
+                    $_SESSION['errors'] = "Database error: " . $stmt->error;
                 }
                 $stmt->close();
             }
         }
     }
+     header("Location: ../View/handle_services.php");
+    exit();
 }
 ?>

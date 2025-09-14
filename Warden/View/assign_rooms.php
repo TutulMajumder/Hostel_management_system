@@ -1,5 +1,5 @@
-<?php 
-include "../Php/process_rooms.php"; 
+<?php
+include "../Php/process_rooms.php";
 ?>
 <!DOCTYPE html>
 <html>
@@ -37,8 +37,15 @@ include "../Php/process_rooms.php";
                     <?php endforeach; ?>
                 </select>
 
-                <span class="error"><?php echo $errors; ?></span>
-                <span class="success"><?php echo $success; ?></span>
+                <?php if (isset($_SESSION['errors'])): ?>
+                    <p class="error"><?php echo $_SESSION['errors'];
+                                        unset($_SESSION['errors']); ?></p>
+                <?php endif; ?>
+
+                <?php if (isset($_SESSION['success'])): ?>
+                    <p class="success"><?php echo $_SESSION['success'];
+                                        unset($_SESSION['success']); ?></p>
+                <?php endif; ?>
 
                 <button type="submit" class="submit-btn">Assign</button>
             </form>
@@ -74,14 +81,16 @@ include "../Php/process_rooms.php";
                                     <td><?php echo $app['hostel_block']; ?></td>
                                     <td><?php echo $app['additional_notes']; ?></td>
                                     <td>
-                                            <?php echo $app['status']; ?>
+                                        <?php echo $app['status']; ?>
                                         </span>
                                     </td>
                                     <td><?php echo $app['room_id'] ?? "-"; ?></td>
                                 </tr>
                             <?php endforeach; ?>
                         <?php else: ?>
-                            <tr><td colspan="10">No applications found</td></tr>
+                            <tr>
+                                <td colspan="10">No applications found</td>
+                            </tr>
                         <?php endif; ?>
                     </tbody>
                 </table>
@@ -116,7 +125,9 @@ include "../Php/process_rooms.php";
                                 </tr>
                             <?php endforeach; ?>
                         <?php else: ?>
-                            <tr><td colspan="7">No rooms available</td></tr>
+                            <tr>
+                                <td colspan="7">No rooms available</td>
+                            </tr>
                         <?php endif; ?>
                     </tbody>
                 </table>
@@ -129,4 +140,5 @@ include "../Php/process_rooms.php";
     <?php include "footer.php"; ?>
 
 </body>
+
 </html>

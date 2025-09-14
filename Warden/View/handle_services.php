@@ -34,8 +34,15 @@ include "../Php/process_services.php";
                 </select>
                 <label>Feedback</label>
                 <textarea name="feedback" class="feedback-textarea" placeholder="Enter feedback..."></textarea>
-                <span class="error"><?php echo $errors; ?></span>
-                <span class="success"><?php echo $success; ?></span>
+                <?php if (isset($_SESSION['errors'])): ?>
+                    <p class="error"><?php echo $_SESSION['errors'];
+                                        unset($_SESSION['errors']); ?></p>
+                <?php endif; ?>
+
+                <?php if (isset($_SESSION['success'])): ?>
+                    <p class="success"><?php echo $_SESSION['success'];
+                                        unset($_SESSION['success']); ?></p>
+                <?php endif; ?>
                 <button type="submit" class="submit-btn">Save</button>
             </form>
             <div class="table-container">
@@ -56,7 +63,7 @@ include "../Php/process_services.php";
                     <tbody>
                         <?php
                         // Fetch the complaints from the database
-                        $query="SELECT * FROM services";
+                        $query = "SELECT * FROM services";
                         $result = $conn->query($query);
                         if ($result->num_rows > 0) {
                             while ($row = $result->fetch_assoc()) {

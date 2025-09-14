@@ -60,8 +60,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if ($password === $user['password'] || password_verify($password, $user['password'])) {
                 // Remember Me Cookie
                 if ($remember) {
-                    setcookie('remember_email', $email, time() + (86400 * 7), "/");
-                    setcookie('remember_pass', $password, time() + (86400 * 7), "/");
+                    setcookie('remember_email', $email, time() +86400, "/");
+                    setcookie('remember_pass', $password, time() + 86400 , "/");
                 } else {
                     setcookie('remember_email', '', time() - 3600, "/");
                     setcookie('remember_pass', '', time() - 3600, "/");

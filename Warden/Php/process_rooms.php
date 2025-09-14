@@ -1,7 +1,8 @@
 <?php
+session_start();
 include "../Db/config.php";
 
-// Fetch all applications always
+// Fetch all applications (optional — you can move this to View if only needed there)
 $query = "SELECT * FROM room_applications";
 $result = $conn->query($query);
 $applications = [];
@@ -11,7 +12,7 @@ if ($result && $result->num_rows > 0) {
     }
 }
 
-// Fetch all rooms always
+// Fetch all rooms (optional — same here)
 $query = "SELECT * FROM rooms";
 $result = $conn->query($query);
 $rooms = [];
@@ -21,23 +22,23 @@ if ($result && $result->num_rows > 0) {
     }
 }
 
-$errors = $success = '';
-
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $application_id = trim($_POST['application_id'] ?? '');
-    $room_id = trim($_POST['room_id'] ?? '');
+    $room_id        = trim($_POST['room_id'] ?? '');
 
-
+    // Validation
     if (empty($application_id) || empty($room_id)) {
-        $errors = "Both Application ID and Room selection are required.";
-        return;
+        $_SESSION['errors'] = "Both Application ID and Room selection are required.";
+        header("Location: ../View/assign_rooms.php");
+        exit();
     }
     if (!ctype_digit($application_id) || !ctype_digit($room_id)) {
-        $errors = "IDs must be numeric.";
-        return;
+        $_SESSION['errors'] = "IDs must be numeric.";
+        header("Location: ../View/assign_rooms.php");
+        exit();
     }
 
-
+    // Check application exists & is pending
     $app_stmt = $conn->prepare("SELECT COUNT(*) as count FROM room_applications WHERE id=? AND status='Pending'");
     $app_stmt->bind_param('i', $application_id);
     $app_stmt->execute();
@@ -46,8 +47,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $app_stmt->close();
 
     if ($row['count'] == 0) {
-        $errors = "Application not found or not pending.";
-        return;
+        $_SESSION['errors'] = "Application not found or not pending.";
+        header("Location: ../View/assign_rooms.php");
+        exit();
     }
 
     // Fetch room info
@@ -59,18 +61,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $room_stmt->close();
 
     if (!$room_row) {
-        $errors = "Room not found.";
-        return;
+        $_SESSION['errors'] = "Room not found.";
+        header("Location: ../View/assign_rooms.php");
+        exit();
     }
 
     $capacity = (int)$room_row['capacity'];
     $occupied = (int)$room_row['occupied'];
 
     if ($occupied >= $capacity) {
-        $errors = "Room is already full.";
-        return;
+        $_SESSION['errors'] = "Room is already full.";
+        header("Location: ../View/assign_rooms.php");
+        exit();
     }
 
+    // Transaction
     $conn->begin_transaction();
     try {
         // Update application
@@ -79,7 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $update_app->execute();
         $update_app->close();
 
-        // Update room: increment occupied, adjust availability
+        // Update room occupancy
         $new_occupied = $occupied + 1;
         $new_available = ($new_occupied >= $capacity) ? 0 : 1;
 
@@ -90,29 +95,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         $conn->commit();
 
-        $success = "Room assigned successfully.";
-
-        // Refresh tables
-        $applications = [];
-        $result = $conn->query("SELECT * FROM room_applications");
-        while ($result && $row = $result->fetch_assoc()) {
-            $applications[] = $row;
-        }
-
-        $rooms = [];
-        $result = $conn->query("SELECT * FROM rooms");
-        while ($result && $row = $result->fetch_assoc()) {
-            $rooms[] = $row;
-        }
+        $_SESSION['success'] = "Room assigned successfully.";
 
     } catch (Exception $e) {
         $conn->rollback();
-        $errors = "Error while assigning room: " . $e->getMessage();
+        $_SESSION['errors'] = "Error while assigning room: " . $e->getMessage();
     }
-}
 
+    header("Location: ../View/assign_rooms.php");
+    exit();
+}
 
 if (isset($conn) && $conn instanceof mysqli) {
     $conn->close();
 }
-?>

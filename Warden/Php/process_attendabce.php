@@ -1,4 +1,5 @@
 <?php
+session_start();
 include "../Db/config.php";
 
 
@@ -11,7 +12,7 @@ if ($result && $result->num_rows > 0) {
         $attendance[] = $row;
     }
 }
-$errors = $success = '';
+
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $attendance_date = trim($_POST['attendance_date'] ?? '');
@@ -21,16 +22,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Validate form fields
     $allowed_status = ['Present', 'Absent'];
     if (empty($attendance_date) || empty($student_id) ||!in_array($status, $allowed_status, true)) {
-        $errors = "All fields are required.";
-        return;
+        $_SESSION['errors'] = "All fields are required.";
     }
     if (!ctype_digit($student_id)) {
-        $errors = "Student ID can only be numbers";
+        $_SESSION['errors'] = "Student ID can only be numbers";
     }
     $today = date('Y-m-d');
     if ($attendance_date != $today) {
-        $errors = "You can only mark attendance for today.";
-        return;
+        $_SESSION['errors'] = "You can only mark attendance for today.";
     } else {
         $attendance_query = "SELECT COUNT(*) as count From attendance WHERE student_id=?";
         $attendance_stmt = $conn->prepare($attendance_query);
@@ -41,15 +40,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $attendance_stmt->close();
 
         if ($row['count'] == 0) {
-            $errors = "Student ID not Found.Please Enter a valid Student ID.";
+            $_SESSION['errors'] = "Student ID not Found.Please Enter a valid Student ID.";
         } else {
             $sql = "UPDATE attendance SET date=?, status=? WHERE student_id=?";
 
             $stmt = $conn->prepare($sql);
 
             if (!$stmt) {
-                $errors = "Database prepare error: " . $conn->error;
-                return;
+                $_SESSION['errors'] = "Database prepare error: " . $conn->error;
+    
             } else {
                 $stmt->bind_param('ssi', $attendance_date,$status, $student_id);
 
@@ -62,15 +61,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             $attendance[] = $row; // store each row in array
                         }
                     }
-                    $success = "Attendance updated successfully.";
+                    $_SESSION['success'] = "Attendance updated successfully.";
                     // $attendance_data = $attendance;
                 } else {
-                    $errors = 'Database error' . $stmt->error;
+                    $_SESSION['errors'] = 'Database error' . $stmt->error;
                 }
             }
 
             $stmt->close();
         }
     }
+    header("Location: ../View/track_attendance.php");
+    exit();
+
 }
 ?>

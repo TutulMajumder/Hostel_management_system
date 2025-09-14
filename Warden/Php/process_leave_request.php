@@ -1,4 +1,5 @@
 <?php
+session_start();
 include "../Db/config.php";
 
 
@@ -11,7 +12,6 @@ if ($result && $result->num_rows > 0) {
         $leave_requests[] = $row;
     }
 }
-$errors = $success = '';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $student_id = trim($_POST['student_id'] ?? '');
@@ -21,20 +21,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Validate form fields
     $allowed_status = ['Approved', 'Rejected'];
     if (empty($student_id) || empty($feedback) || !in_array($status, $allowed_status, true)) {
-        $errors = "All fields are required and status must be 'Approved ' or 'Rejected'";
-        return;
+        $_SESSION['errors'] = "All fields are required and status must be 'Approved ' or 'Rejected'";
     }
     if (!ctype_digit($student_id)) {
-        $errors = "Student ID can only be numbers";
+        $_SESSION['errors'] = "Student ID can only be numbers";
     }
     if (!preg_match('/^[a-zA-Z]/', $feedback)) {
-        $errors = "Feedback must start with a letter and cannot start with a number.";
-        return;
+        $_SESSION['errors'] = "Feedback must start with a letter and cannot start with a number.";
     }
 
     if (strlen($feedback) > 200) {
-        $errors = "Feedback must not exceed 200 characters.";
-        return;
+        $_SESSION['errors'] = "Feedback must not exceed 200 characters.";
     } else {
         $leave_request_query = "SELECT COUNT(*) as count From leave_requests WHERE student_id=?";
         $leave_request_stmt = $conn->prepare($leave_request_query);
@@ -45,15 +42,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $leave_request_stmt->close();
 
         if ($row['count'] == 0) {
-            $errors = "Student ID not Found.Please Enter a valid Complaint ID.";
+            $_SESSION['errors'] = "Student ID not Found.Please Enter a valid Complaint ID.";
         } else {
             $sql = "UPDATE leave_requests SET status=?, feedback=? WHERE Student_id=?";
 
             $stmt = $conn->prepare($sql);
 
             if (!$stmt) {
-                $errors = "Database prepare error: " . $conn->error;
-                return;
+                $_SESSION['errors'] = "Database prepare error: " . $conn->error;
+    
             } else {
                 $stmt->bind_param('ssi', $status, $feedback, $student_id);
 
@@ -66,14 +63,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             $leave_requests[] = $row; // store each row in array
                         }
                     }
-                    $success = "Leave Request updated successfully.";
+                    $_SESSION['success'] = "Leave Request updated successfully.";
                 } else {
-                    $errors = 'Database error' . $stmt->error;
+                    $_SESSION['errors'] = 'Database error' . $stmt->error;
                 }
             }
 
             $stmt->close();
         }
     }
+    header("Location: ../View/leave_request.php");
+    exit();
 }
 ?>

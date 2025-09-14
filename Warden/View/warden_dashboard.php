@@ -3,7 +3,7 @@ include "../Php/process_dashboard.php";
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
     <title>Warden Dashboard - Hostel Management System</title>
