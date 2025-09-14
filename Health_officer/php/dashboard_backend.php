@@ -2,7 +2,7 @@
 session_start();
 
 // If not logged in → redirect to login
-if (!isset($_SESSION["username"])) {
+if (!isset($_SESSION["user_id"])) {
     header("Location: ../view/login.php");
     exit();
 }
@@ -11,15 +11,22 @@ include "../db/config.php"; // DB connection
 
 // ------------------ Recent Health Requests (latest 5) ------------------
 $recent_requests_sql = "
-    SELECT hr.id, hr.status, hr.notes, s.name, s.student_id, s.symptoms, s.request_date
-    FROM health_requests hr
-    LEFT JOIN students s ON hr.student_id = s.student_id
-    ORDER BY hr.id DESC
+    SELECT
+        ha.id                             AS id,           -- Request ID
+        COALESCE(s.id, ha.student_id)     AS student_id,   -- Student ID
+        COALESCE(s.fullname, ha.fullname) AS name,         -- Student name
+        ha.description                     AS symptoms,     -- Symptoms/description
+        ha.submitted_at                    AS request_date, -- Request date/time
+        COALESCE(hr.status, 'Pending')     AS status        -- Status (default Pending)
+    FROM health_applications ha
+    LEFT JOIN students s       ON s.id  = ha.student_id
+    LEFT JOIN health_requests hr ON hr.id = ha.id          -- 1:1 with application
+    ORDER BY ha.id DESC
     LIMIT 5
 ";
 $recent_requests = $conn->query($recent_requests_sql);
 
-// ------------------ Doctor Visits count ------------------
+// // ------------------ Doctor Visits count ------------------
 $doctor_visits_sql = "SELECT COUNT(*) as total_visits FROM doctor_visits";
 $doctor_visits_result = $conn->query($doctor_visits_sql);
 $doctor_visits = ($doctor_visits_result->num_rows > 0) 

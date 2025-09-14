@@ -1,64 +1,58 @@
-<?php include "../php/salary_history_backend.php"; ?>
-<?php include 'topbar.php'; ?>
+<?php
+// Use a reliable include path from the view folder
+include_once __DIR__ . '/../php/salary_history_backend.php';
+?>
 <!DOCTYPE html>
 <html>
 <head>
     <title>Salary History</title>
-    <link rel="stylesheet" href="/WT_Summer24-25/health_officer/css/salary_history.css">
-    <link rel="stylesheet" href="/WT_Summer24-25/health_officer/css/topbar.css">
-    <link rel="stylesheet" href="/WT_Summer24-25/health_officer/css/footer.css">
+    <link rel="stylesheet" href="/Hostel_management_system/Health_officer/css/salary_history.css">
+    <link rel="stylesheet" href="/Hostel_management_system/Health_officer/css/topbar.css">
+    <link rel="stylesheet" href="/Hostel_management_system/Health_officer/css/footer.css">
 </head>
 <body>
-<div class="container">
-    <div class="dashboard-header">
-        <h2>💰 Salary History</h2>
-        <a href="dashboard.php" class="back-btn">Back to Dashboard</a>
-    </div>
+    <h2>Salary History</h2>
+    <a href="dashboard.php" class="back-btn">Back to Dashboard</a>
 
-    <div class="officer-info">
-        <p><strong>Username:</strong> <?= htmlspecialchars($officer['username']) ?></p>
-        <p><strong>Email:</strong> <?= htmlspecialchars($officer['email']) ?></p>
-    </div>
+    <?php if (!empty($error)) { ?>
+        <p style="color:red;"><?php echo htmlspecialchars($error, ENT_QUOTES, 'UTF-8'); ?></p>
+    <?php } ?>
+    <?php if (!empty($success)) { ?>
+        <p style="color:green;"><?php echo htmlspecialchars($success, ENT_QUOTES, 'UTF-8'); ?></p>
+    <?php } ?>
 
-    <div class="list-section">
-        <table>
-            <thead>
+    <p><strong>Username:</strong> <?php echo htmlspecialchars($officer['username'], ENT_QUOTES, 'UTF-8'); ?></p>
+    <p><strong>Email:</strong> <?php echo htmlspecialchars($officer['email'], ENT_QUOTES, 'UTF-8'); ?></p>
+
+    <table border="1" cellpadding="6" cellspacing="0">
+        <thead>
+            <tr>
+                <th>Month/Year</th>
+                <th>Basic Salary</th>
+                <th>Allowances</th>
+                <th>Deductions</th>
+                <th>Net Salary</th>
+                <th>Status</th>
+                <th>Payment Date</th>
+            </tr>
+        </thead>
+        <tbody>
+        <?php if (!empty($salary_records)) { ?>
+            <?php foreach ($salary_records as $r) { ?>
                 <tr>
-                    <th>Month/Year</th>
-                    <th>Basic Salary</th>
-                    <th>Allowances</th>
-                    <th>Deductions</th>
-                    <th>Net Salary</th>
-                    <th>Status</th>
-                    <th>Payment Date</th>
-                    <th>Processed By</th>
+                    <td><?php echo htmlspecialchars($r['month_year'], ENT_QUOTES, 'UTF-8'); ?></td>
+                    <td><?php echo htmlspecialchars($r['basic_salary'], ENT_QUOTES, 'UTF-8'); ?></td>
+                    <td><?php echo htmlspecialchars($r['allowances'], ENT_QUOTES, 'UTF-8'); ?></td>
+                    <td><?php echo htmlspecialchars($r['deductions'], ENT_QUOTES, 'UTF-8'); ?></td>
+                    <td><strong><?php echo htmlspecialchars($r['net_salary'], ENT_QUOTES, 'UTF-8'); ?></strong></td>
+                    <td><?php echo htmlspecialchars($r['payment_status'], ENT_QUOTES, 'UTF-8'); ?></td>
+                    <td><?php echo !empty($r['payment_date']) ? htmlspecialchars($r['payment_date'], ENT_QUOTES, 'UTF-8') : '-'; ?></td>
                 </tr>
-            </thead>
-            <tbody>
-                <?php if(!empty($salary_records)): ?>
-                    <?php foreach($salary_records as $row): ?>
-                        <tr>
-                            <td><?= htmlspecialchars($row['month_year']) ?></td>
-                            <td><?= htmlspecialchars($row['basic_salary']) ?></td>
-                            <td><?= htmlspecialchars($row['allowances']) ?></td>
-                            <td><?= htmlspecialchars($row['deductions']) ?></td>
-                            <td><?= htmlspecialchars($row['net_salary']) ?></td>
-                            <td style="color:<?= $row['payment_status']=='Paid'?'green':'orange' ?>">
-                                <?= htmlspecialchars($row['payment_status']) ?>
-                            </td>
-                            <td><?= $row['payment_date'] ? htmlspecialchars($row['payment_date']) : '-' ?></td>
-                            <td><?= htmlspecialchars($row['processed_by']) ?></td>
-                        </tr>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <tr><td colspan="8">No salary records found.</td></tr>
-                <?php endif; ?>
-            </tbody>
-        </table>
-    </div>
-</div>
-
-<script src="/WT_Summer24-25/project_dev/js/salary_history.js"></script>
-<?php include 'footer.php'; ?>
+            <?php } ?>
+        <?php } else { ?>
+            <tr><td colspan="7">No salary records found.</td></tr>
+        <?php } ?>
+        </tbody>
+    </table>
 </body>
 </html>

@@ -1,17 +1,17 @@
 <?php
 include "../php/health_requests_backend.php";
-include 'topbar.php';
 ?>
-
 <!DOCTYPE html>
 <html>
 <head>
     <title>Health Requests Management</title>
-    <link rel="stylesheet" href="/WT_Summer24-25/project_dev/css/health_requests.css">
-    <link rel="stylesheet" href="/WT_Summer24-25/project_dev/css/topbar.css">
-    <link rel="stylesheet" href="/WT_Summer24-25/project_dev/css/footer.css">
+    <link rel="stylesheet" href="/Hostel_management_system/Health_officer/css/health_requests.css">
+    <link rel="stylesheet" href="/Hostel_management_system/Health_officer/css/topbar.css">
+    <link rel="stylesheet" href="/Hostel_management_system/Health_officer/css/footer.css">
 </head>
 <body>
+<?php include 'topbar.php'; ?>
+
 <div class="container">
     <div class="dashboard-header">
         <h2>Health Requests Management</h2>
@@ -44,8 +44,8 @@ include 'topbar.php';
                     <td><?php echo htmlspecialchars($row['request_date']); ?></td>
                     <td>
                         <?php 
-                            if ($row['status'] == "Pending") echo "<span class='badge badge-pending'>Pending</span>";
-                            elseif ($row['status'] == "In Progress") echo "<span class='badge badge-in-progress'>In Progress</span>";
+                            if ($row['status'] === "Pending") echo "<span class='badge badge-pending'>Pending</span>";
+                            elseif ($row['status'] === "In Progress") echo "<span class='badge badge-in-progress'>In Progress</span>";
                             else echo "<span class='badge badge-resolved'>Resolved</span>";
                         ?>
                     </td>

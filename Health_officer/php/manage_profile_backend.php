@@ -1,65 +1,29 @@
 <?php
 session_start();
-include "../db/config.php"; // DB connection
+include "../DB/config.php";
 
-// Session check
-if (!isset($_SESSION["username"]) || empty($_SESSION["username"])) {
-    header("Location: login.php");
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'health_officer') {
+    header("Location: ../View/login.php");
     exit();
 }
 
-$username = $_SESSION["username"];
+$officer_id = $_SESSION['user_id'];
 
-// Handle password change
-if (isset($_POST['change_password'])) {
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $phone = $_POST['phone'];
+    $semester = $_POST['semester'];
+    $department = $_POST['department'];
+    $dob = $_POST['dob'];
+    $address = $_POST['address'];
 
-    $new = trim($_POST['new_password']);
-    $confirm = trim($_POST['confirm_password']);
+    $stmt = $conn->prepare("UPDATE students SET phone=?, semester=?, department=?, dob=?, address=? WHERE id=?");
+    $stmt->bind_param("sssssi", $phone, $semester, $department, $dob, $address, $student_id);
 
-    //  Validation: empty fields
-    if (empty($new) || empty($confirm)) {
-        $_SESSION['error'] = "All password fields are required!";
+    if ($stmt->execute()) {
+        header("Location: ../View/manage_profile.php?success=Profile updated successfully");
+    } else {
+        header("Location: ../View/manage_profile.php?error=Error updating profile");
     }
-    // Validation: match
-    elseif ($new !== $confirm) {
-        $_SESSION['error'] = "Passwords do not match!";
-    }
-    // Validation: length
-    elseif (strlen($new) < 6) {
-        $_SESSION['error'] = "Password must be at least 6 characters long!";
-    }
-    else {
-        //  Check current password to prevent same password
-        $stmt = $conn->prepare("SELECT password FROM health_officers WHERE username=?");
-        $stmt->bind_param("s", $username);
-        $stmt->execute();
-        $stmt->bind_result($current_hash);
-        $stmt->fetch();
-        $stmt->close();
-
-        if (password_verify($new, $current_hash)) {
-            $_SESSION['error'] = "New password cannot be the same as current password!";
-        } else {
-            // Update password in DB
-            $hash = password_hash($new, PASSWORD_DEFAULT);
-            $stmt = $conn->prepare("UPDATE health_officers SET password=? WHERE username=?");
-            $stmt->bind_param("ss", $hash, $username);
-            if ($stmt->execute()) {
-                $_SESSION['success'] = "Password updated successfully!";
-            } else {
-                $_SESSION['error'] = "Database error: " . $conn->error;
-            }
-            $stmt->close();
-        }
-    }
-
-    // Redirect to frontend to show alert
-    header("Location: manage_profile.php");
     exit();
 }
-
-// Fetch officer info
-$officer_result = $conn->query("SELECT username, email FROM health_officers WHERE username='$username'");
-$officer = $officer_result->fetch_assoc();
-if (!$officer) $officer = ['username'=>'N/A','email'=>'N/A'];
 ?>
