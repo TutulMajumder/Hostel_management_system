@@ -1,59 +1,65 @@
 <?php
 session_start();
 
-if (!isset($_SESSION['id'])) {
-    header("Location: ../View/login.php");
+if (!isset($_SESSION['user_id']) || ($_SESSION['role'] ?? '') !== 'health_officer') {
+    header("Location: ../view/login.php");
     exit();
 }
 
-include "../DB/config.php";
+require_once "../db/config.php"; // make sure this sets $conn (MySQLi)
 
-$officer_id = $_SESSION['id'];
+$officer_id = $_SESSION['user_id'];
 
 $success = isset($_GET['success']) ? $_GET['success'] : "";
 $error   = isset($_GET['error']) ? $_GET['error'] : "";
 
-$stmt = $conn->prepare("SELECT id, name, email, phone, gender, dob, address FROM health_officers WHERE id = ?");
+// Fetch logged-in health officer (use USERNAME column, not name)
+$stmt = $conn->prepare("SELECT id, username, email, phone, gender, dob, address FROM health_officers WHERE id = ?");
 $stmt->bind_param("i", $officer_id);
 $stmt->execute();
 $result = $stmt->get_result();
 $officer = $result->fetch_assoc();
 
 if (!$officer) {
-    header("Location: ../View/login.php");
+    header("Location: ../view/login.php");
     exit();
 }
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Health Officer – Manage Profile</title>
-    <link rel="stylesheet" href="../CSS/topbar.css">
-    <link rel="stylesheet" href="../CSS/health_officer_profile.css">
-    <link rel="stylesheet" href="../CSS/footer.css">
+    <meta charset="UTF-8" />
+    <title>Health Officer • Manage Profile</title>
+    <link rel="stylesheet" href="../css/manage_profile.css">
+    <link rel="stylesheet" href="../css/topbar.css">
+    <link rel="stylesheet" href="../css/footer.css">
+
 </head>
 <body>
 
 <?php include 'topbar.php'; ?>
 
 <div class="container">
+    <h2>Health Officer Profile</h2>
 
-    <h2>Manage Profile (Health Officer)</h2>
+    <?php if($success): ?>
+        <p class="success"><?php echo htmlspecialchars($success); ?></p>
+    <?php endif; ?>
 
-    <?php if($success) echo "<p class='success'>".htmlspecialchars($success)."</p>"; ?>
-    <?php if($error) echo "<p class='error'>".htmlspecialchars($error)."</p>"; ?>
+    <?php if($error): ?>
+        <p class="error"><?php echo htmlspecialchars($error); ?></p>
+    <?php endif; ?>
 
     <!-- Update Profile -->
-    <form action="../php/health_officer_profile_actions.php" method="POST" novalidate>
-        <input type="hidden" name="action" value="update_profile">
+    <form action="../php/manage_profile_backend.php" method="POST" novalidate>
+        <input type="hidden" name="form_type" value="update_profile">
         <input type="hidden" name="id" value="<?php echo (int)$officer['id']; ?>">
 
         <label>ID:</label>
         <input type="text" value="<?php echo (int)$officer['id']; ?>" disabled>
 
-        <label>Full Name:</label>
-        <input type="text" value="<?php echo htmlspecialchars($officer['name']); ?>" disabled>
+        <label>Username:</label>
+        <input type="text" value="<?php echo htmlspecialchars($officer['username']); ?>" disabled>
 
         <label>Email:</label>
         <input type="email" value="<?php echo htmlspecialchars($officer['email']); ?>" disabled>
@@ -64,11 +70,11 @@ if (!$officer) {
         <label>Gender:</label>
         <select name="gender" required>
             <?php
-                $genders = ["Male", "Female", "Other"];
+                $genders = ["Male","Female","Other"];
                 $currentGender = $officer['gender'] ?? "";
                 foreach ($genders as $g) {
-                    $sel = ($currentGender === $g) ? "selected" : "";
-                    echo "<option value=\"{$g}\" {$sel}>{$g}</option>";
+                    $sel = ($g === $currentGender) ? "selected" : "";
+                    echo '<option value="'.htmlspecialchars($g).'" '.$sel.'>'.htmlspecialchars($g).'</option>';
                 }
             ?>
         </select>
@@ -84,8 +90,8 @@ if (!$officer) {
 
     <!-- Change Password -->
     <h3>Change Password</h3>
-    <form action="../php/health_officer_profile_actions.php" method="POST" novalidate>
-        <input type="hidden" name="action" value="change_password">
+    <form action="../php/manage_profile_backend.php" method="POST">
+        <input type="hidden" name="form_type" value="change_password">
 
         <label>Current Password:</label>
         <input type="password" name="current_password" required>
@@ -100,6 +106,7 @@ if (!$officer) {
     </form>
 
 </div>
+<?php include 'footer.php'; ?>
 
 </body>
 </html>

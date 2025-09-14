@@ -1,29 +1,50 @@
 <?php
-// SIMPLE SALARY HISTORY BACKEND
 session_start();
 
-// check login + role
+// Redirect if not logged in
 if (!isset($_SESSION["user_id"]) || ($_SESSION["role"] ?? '') !== "health_officer") {
     header("Location: ../view/login.php");
     exit();
 }
 
-// db connect (from /Health_officer/php/ to /db/config.php)
-include "../db/config.php";
+include "../db/config.php";  // DB connection
 
-// get username from session (to filter salary history)
-$officer_username = isset($_SESSION["username"]) ? $_SESSION["username"] : "";
+$success = $error = "";
 
-// protect username
-$officer_username_esc = mysqli_real_escape_string($conn, $officer_username);
+// Add new visit
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['add_visit'])) {
+    $doctor  = trim($_POST['doctor_name']);
+    $date    = trim($_POST['visit_date']);
+    $time    = trim($_POST['visit_time']);
+    $purpose = trim($_POST['purpose']);
+    $slots   = trim($_POST['max_slots']);
 
-// fetch salary history for this username (do NOT select processed_by)
-$sql = "SELECT salary_id, username, month_year, basic_salary, allowances, deductions, net_salary, payment_status, payment_date
-        FROM salary_history
-        WHERE username = '$officer_username_esc'
-        ORDER BY payment_date DESC, salary_id DESC";
-$salary_result = mysqli_query($conn, $sql);
+    if ($doctor === "" || $date === "" || $time === "" || $purpose === "" || $slots === "") {
+        $error = "Please fill all fields!";
+    } else {
+        $sql = "INSERT INTO doctor_visits (doctor_name, visit_date, visit_time, purpose, max_slots) 
+                VALUES ('$doctor', '$date', '$time', '$purpose', '$slots')";
+        if ($conn->query($sql) === TRUE) {
+            $success = "Doctor assigned successfully!";
+        } else {
+            $error = "Error: " . $conn->error;
+        }
+    }
+}
 
-// you can use:
-//   $officer_username  → show on page
-//   $salary_result     → loop rows in the view
+// Cancel visit
+if (isset($_GET['delete'])) {
+    $id = $_GET['delete'];
+    if (!empty($id)) {
+        $sql = "DELETE FROM doctor_visits WHERE id='$id'";
+        if ($conn->query($sql) === TRUE) {
+            $success = "Doctor visit cancelled successfully!";
+        } else {
+            $error = "Error: " . $conn->error;
+        }
+    }
+}
+
+// Fetch visits
+$result = $conn->query("SELECT * FROM doctor_visits ORDER BY visit_date, visit_time");
+?>

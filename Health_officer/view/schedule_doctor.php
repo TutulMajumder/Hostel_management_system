@@ -6,9 +6,9 @@ include "topbar.php";
 <html>
 <head>
     <title>Schedule Doctor Visits</title>
-    <link rel="stylesheet" href="/WT_Summer24-25/health_officer/css/schedule_doctor.css">
-    <link rel="stylesheet" href="/WT_Summer24-25/health_officer/css/topbar.css">
-    <link rel="stylesheet" href="/WT_Summer24-25/health_officer/css/footer.css">
+    <link rel="stylesheet" href="../css/schedule_doctor.css">
+    <link rel="stylesheet" href="../css/topbar.css">
+    <link rel="stylesheet" href="../css/footer.css">
 </head>
 <body>
 <div class="container">
