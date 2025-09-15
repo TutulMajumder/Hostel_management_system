@@ -60,6 +60,8 @@ include "../Php/process_leave_request.php";
                             <th>Leave Start Date</th>
                             <th>Leave End Date</th>
                             <th>Reason</th>
+                            <th>Status</th>
+                            <th>Feedback</th>
                             <th>Leave Application</th>
 
                         </tr>
@@ -74,10 +76,12 @@ include "../Php/process_leave_request.php";
                                 echo "<tr>";
                                 echo "<td>" . $row['id'] . "</td>";
                                 echo "<td>" . $row['student_id'] . "</td>";
-                                echo "<td>" . $row['fullname'] . "</td>";
+                                echo "<td>" . $row['student_name'] . "</td>";
                                 echo "<td>" . $row['leave_start_date'] . "</td>";
                                 echo "<td>" . $row['leave_end_date'] . "</td>";
                                 echo "<td>" . $row['reason'] . "</td>";
+                                echo "<td>" . $row['status'] . "</td>";
+                                echo "<td>" . $row['feedback'] . "</td>";
                                 echo "<td>" . $row['file_path'] . "</td>";
                                 echo "</tr>";
                             }
